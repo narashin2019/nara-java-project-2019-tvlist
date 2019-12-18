@@ -8,6 +8,5 @@ public class App {
     System.out.println("드라마 공유 사이트에 오신 것을 환영해요.");
     System.out.println("111");
     System.out.println("222");
-    System.out.println("333");
   }
 }
