@@ -6,6 +6,5 @@ public class App {
 
   public static void main(String[] args) {
     System.out.println("드라마목록 공유 사이트에 오신 것을 환영해요.");
-    System.out.println("111");
   }
 }
