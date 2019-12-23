@@ -10,63 +10,75 @@ public class App {
   public static void main(String[] args) {
     
     Scanner keyboard = new Scanner(System.in);
+    
+    class Show {
+      int no;
+      String country;
+      String genres;
+      String titleKor;
+      String titleEng;
+      int ratedStar;
+      String comments;
+      String keywords;
+      Date startDate;
+      Date endDate;
+      int watchedEpisode;
+    }
+    
+    
+    final int SIZE = 10000;
 
-    final int LENGTH = 10000;
+    // Show인스턴스 주소를 담을 레퍼런스 배열을 만들었다.
+    Show[] shows = new Show[SIZE];
+
+
     int count = 0;
+    for (int i = 0; i < SIZE; i++ ) {
+      count++;
 
-    int[] no = new int[LENGTH];
-    String[] country = new String[LENGTH];
-    String[] genres = new String[LENGTH];
-    String[] titleKor = new String[LENGTH];
-    String[] titleEng = new String[LENGTH];
-    int[] ratedStar = new int[LENGTH];
-    String[] comments = new String[LENGTH];
-    String[] keywords = new String[LENGTH];
-    Date[] startDate = new Date[LENGTH];
-    Date[] endDate = new Date[LENGTH];
-    int[] watchedEpisode = new int[LENGTH];
-
-
-    for (int i = 0; i < LENGTH; i++ ) {
+      //Show형식으로 된 식판을 하나 만들었다. 그 주소는 show
+      Show show = new Show();
+      
       System.out.print("번호? ");
-      no[i] = keyboard.nextInt();
+      show.no = keyboard.nextInt();
       keyboard.nextLine();
 
       System.out.print("국가? ");
-      country[i] = keyboard.nextLine();
+      show.country = keyboard.nextLine();
 
       System.out.print("장르? ");
-      genres[i] = keyboard.nextLine();
+      show.genres = keyboard.nextLine();
 
       System.out.print("제목한글? ");
-      titleKor[i] = keyboard.nextLine();
+      show.titleKor = keyboard.nextLine();
 
       System.out.print("제목영문? ");
-      titleEng[i] = keyboard.nextLine();
+      show.titleEng = keyboard.nextLine();
 
       System.out.print("별점? ");
-      ratedStar[i] = keyboard.nextInt();
+      show.ratedStar = keyboard.nextInt();
       keyboard.nextLine();
 
       System.out.print("코멘트? ");
-      comments[i] = keyboard.nextLine();
+      show.comments = keyboard.nextLine();
 
       System.out.print("키워드? ");
-      keywords[i] = keyboard.nextLine();
+      show.keywords = keyboard.nextLine();
 
       System.out.print("시작일? ");
-      startDate[i] = Date.valueOf(keyboard.nextLine()); 
+      show.startDate = Date.valueOf(keyboard.nextLine()); 
 
       System.out.print("종료일? ");
-      endDate[i] = Date.valueOf(keyboard.next()); 
+      show.endDate = Date.valueOf(keyboard.next()); 
       keyboard.nextLine();
 
       System.out.print("어디까지봤니? ");
-      watchedEpisode[i] = keyboard.nextInt();
+      show.watchedEpisode = keyboard.nextInt();
       keyboard.nextLine();
 
-      count++;
-
+      // 위에 생성한 배열에 식판을 꼽는다.
+      shows[i] = show;
+      
       System.out.println();
       System.out.println("계속 입력하시겠습니까?(Y/n)");
       String response = keyboard.next();
@@ -81,10 +93,12 @@ public class App {
     System.out.println();
     
     for (int i = 0; i < count; i++) {
-      System.out.printf("%d, %-20s, %s ~ %s, %d\n", no[i], titleKor[i], 
-          startDate[i], endDate[i], watchedEpisode[i]);
+      // 위에서 만든 배열 불러오기
+      Show show = shows[i];
+      System.out.printf("%d, %-20s, %s ~ %s, %d\n", 
+          show.no, show.titleKor, show.startDate, 
+          show.endDate, show.watchedEpisode);
     }
-    
     
   }
 }

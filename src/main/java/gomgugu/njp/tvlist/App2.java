@@ -11,47 +11,57 @@ public class App2 {
     
     Scanner keyboard = new Scanner(System.in);
 
-    final int size = 10000; 
+    class Member{
+      int no;
+      String name;
+      String email; 
+      String password; 
+      String photo; 
+      String tel; 
+      Date registeredDate;
+    }
+    
+    final int SIZE = 10000; 
+    
+    // Member 인스턴스의 주소를 저장할 레퍼런스 배열을 준비.
+    Member[] members = new Member[SIZE];
+    
+    
     int count = 0;
-
-    int[] no = new int[size];
-    String[] name = new String[size];
-    String[] email = new String[size]; 
-    String[] password = new String[size]; 
-    String[] photo = new String[size]; 
-    String[] tel = new String[size]; 
-    Date[] registeredDate = new Date[size];
-
-
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < SIZE; i++) {
+      count++;
+      
+      // 회원정보를 저장할 메모리를 Member 설계도에 따라 만든다.
+      Member member = new Member();
+      
       System.out.print("번호? ");
-      no[i] = keyboard.nextInt();
+      member.no = keyboard.nextInt();
       keyboard.nextLine();
 
       System.out.print("이름? ");
-      name[i] = keyboard.nextLine();
+      member.name = keyboard.nextLine();
 
       System.out.print("이메일? ");
-      email[i] = keyboard.nextLine();
+      member.email = keyboard.nextLine();
 
       System.out.print("암호? ");
-      password[i] = keyboard.nextLine();
+      member.password = keyboard.nextLine();
 
       System.out.print("사진? ");
-      photo[i] = keyboard.nextLine();
+      member.photo = keyboard.nextLine();
 
       System.out.print("전화? ");
-      tel[i] = keyboard.nextLine();
+      member.tel = keyboard.nextLine();
 
-      registeredDate[i] = new Date(System.currentTimeMillis()); 
+      member.registeredDate = new Date(System.currentTimeMillis()); 
       keyboard.nextLine();
-
-      count++;
+      
+      // 회원 정보가 담겨있는 인스턴스의 주소를 레퍼런스 배열에 보관한다.
+      members[i] = member;
      
       System.out.println();
       System.out.println("계속 입력하시겠습니까?(Y/n)");
       String response = keyboard.next();
-      
       
         if (!response.equalsIgnoreCase("y")) {
           break;
@@ -63,8 +73,11 @@ public class App2 {
     System.out.println();
 
     for (int i=0; i<count; i++) {
-      System.out.printf("%d, %s, %-30s, %-16s %s\n", no[i], 
-          name[i], email[i], tel[i], registeredDate[i]);
+      // 위에 생성한 Member 배열을 불러온다.
+      Member member = members[i];
+      System.out.printf("%d, %s, %-30s, %-16s %s\n", member.no, 
+          member.name, member.email, member.tel, 
+          member.registeredDate);
     }
     
   }

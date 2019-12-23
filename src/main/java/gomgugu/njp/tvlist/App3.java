@@ -11,38 +11,43 @@ public class App3 {
     
     Scanner keyboard = new Scanner(System.in);
 
-    final int LENGTH = 10000;
+    class Board{
+      int no; 
+      String title;  
+      String contents;
+      Date date;
+      int viewCount;
+    }
     
-    int[] no = new int[LENGTH] ; 
-    String[] title = new String[LENGTH];  
-    String[] contents = new String[LENGTH];
-    Date[] date = new Date[LENGTH];
-    int[] viewCount = new int[LENGTH];
-    
+    final int SIZE = 10000;
+    Board[] boards = new Board[SIZE];
+
     int count = 0;
-    
-    for (int i = 0; i < LENGTH; i++) {
+    for (int i = 0; i < SIZE; i++) {
+      count++; // => count = count + 1;
+      
+      Board board = new Board();
+      
       System.out.print("번호? ");
-      no[i] = keyboard.nextInt();
+      board.no = keyboard.nextInt();
       keyboard.nextLine(); 
 
       System.out.print("제목? ");
-      title[i] = keyboard.nextLine();
+      board.title = keyboard.nextLine();
       
       System.out.print("내용? ");
-      contents[i] = keyboard.nextLine();
+      board.contents = keyboard.nextLine();
 
-      date[i] = new Date(System.currentTimeMillis());
+      board.date = new Date(System.currentTimeMillis());
 
-      viewCount[i] = 0;
-
-      count++; // => count = count + 1;
-          
+      board.viewCount = 0;
+      
+      boards[i] = board;
+      
       System.out.println();
       System.out.print("계속 입력하시겠습니까?(Y/n) ");
-      System.out.println();
       String response = keyboard.next();
-      System.out.println();
+
       if (!response.equalsIgnoreCase("y")) {
         break;
       }
@@ -53,8 +58,10 @@ public class App3 {
     System.out.println();
 
     for (int i = 0; i < count; i++) {
+      Board board = boards[i];
       System.out.printf("%d, %-20s, %s, %d\n", 
-          no[i], title[i], date[i], viewCount[i]);
+          board.no, board.title, board.date, board.viewCount);
     }
+
   }
 }
