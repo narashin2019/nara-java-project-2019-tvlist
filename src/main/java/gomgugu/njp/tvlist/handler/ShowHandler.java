@@ -1,4 +1,4 @@
-package gomgugu.njp.tvlist;
+package gomgugu.njp.tvlist.handler;
 
 import java.sql.Date;
 import java.util.Scanner;
@@ -21,10 +21,10 @@ public class ShowHandler {
   static final int SHOW_SIZE = 10000;
   static Show[] shows = new Show[SHOW_SIZE];
   static int showCount = 0;
-  //키보드는 app의 키보드를 쓴다고 코드입력해야함, import문 반드시 입력
-  static Scanner keyboard;
+
+  public static Scanner keyboard;
   
-  static void addShow() {
+  public static void addShow() {
     Show show = new Show();
 
     System.out.print("번호? ");
@@ -68,7 +68,7 @@ public class ShowHandler {
     System.out.println("저장하였습니다.");
   }
   
-  static void listShow() {
+  public static void listShow() {
     for (int i = 0; i < showCount; i++) {
       Show s = shows[i];
       System.out.printf("%d, %-20s, %s ~ %s, %d\n", 

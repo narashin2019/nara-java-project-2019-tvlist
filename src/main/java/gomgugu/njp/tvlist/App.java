@@ -6,6 +6,9 @@ package gomgugu.njp.tvlist;
 
 import java.util.Scanner;
 //import java.sql.Date;
+import gomgugu.njp.tvlist.handler.BoardHandler;
+import gomgugu.njp.tvlist.handler.MemberHandler;
+import gomgugu.njp.tvlist.handler.ShowHandler;
 
 public class App {
   

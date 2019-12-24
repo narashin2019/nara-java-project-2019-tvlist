@@ -1,4 +1,4 @@
-package gomgugu.njp.tvlist;
+package gomgugu.njp.tvlist.handler;
 
 import java.sql.Date;
 import java.util.Scanner;
@@ -16,9 +16,10 @@ public class BoardHandler {
   static final int BOARD_SIZE = 10000;
   static Board[] boards = new Board[BOARD_SIZE];
   static int boardCount = 0;
-  static Scanner keyboard;
   
-  static void addBoard() {
+  public static Scanner keyboard;
+  
+  public static void addBoard() {
     Board board = new Board();
 
     System.out.print("번호? ");
@@ -40,7 +41,7 @@ public class BoardHandler {
   }
   
   
-  static void listBoard() {
+  public static void listBoard() {
     for (int i = 0; i < boardCount; i++) {
       Board b = boards[i];
       System.out.printf("%d, %-20s, %s, %d\n", 
