@@ -16,33 +16,43 @@ public class MemberHandler {
   // => 공유하는 변수
   // => 클래스가 메모리에 로딩될 때 자동으로 생성된다.
   static final int MEMBER_SIZE = 100; 
-  public static Scanner keyboard;
+  
+  //keyboard대신 input으로 / static뺌
+  public Scanner input;
+  
+  
+  //생성자 / 공개로 해야함./this라는 내장 파라미터 있음
+  public MemberHandler(Scanner input) {
+    this.input = input;
+    this.members = new Member[MEMBER_SIZE];
+  }
+  
   
   //클래스 메서드 > 인스턴스 메서드로
   public void addMember() {
     Member member = new Member();
 
     System.out.print("번호? ");
-    member.no = keyboard.nextInt();
-    keyboard.nextLine();
+    member.no = input.nextInt();
+    input.nextLine();
 
     System.out.print("이름? ");
-    member.name = keyboard.nextLine();
+    member.name = input.nextLine();
 
     System.out.print("이메일? ");
-    member.email = keyboard.nextLine();
+    member.email = input.nextLine();
 
     System.out.print("암호? ");
-    member.password = keyboard.nextLine();
+    member.password = input.nextLine();
 
     System.out.print("사진? ");
-    member.photo = keyboard.nextLine();
+    member.photo = input.nextLine();
 
     System.out.print("전화? ");
-    member.tel = keyboard.nextLine();
+    member.tel = input.nextLine();
 
     member.registeredDate = new Date(System.currentTimeMillis()); 
-    keyboard.nextLine();
+    input.nextLine();
 
     this.members[this.memberCount++] = member;
     System.out.println("저장하였습니다.");

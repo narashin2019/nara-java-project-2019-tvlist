@@ -14,48 +14,59 @@ public class ShowHandler {
   //클래스 필드 (static field)
   // => 공유하는 변수
   static final int SHOW_SIZE = 100;
-  public static Scanner keyboard;
+  
+  
+  public Scanner input;
+  
+  //생성자
+  public ShowHandler(Scanner input) { //퍼블릭으로 완전공개 레슨핸들러가 생성자()에서 스캐너 인풋받네. 반드시 필요하구나 
+    this.input = input;
+    this.shows = new Show[SHOW_SIZE]; 
+  }
+  
+  
+  
   
   //클래스 메서드 > 인스턴스 메서드로!
   public void addShow() {
     Show show = new Show();
 
     System.out.print("번호? ");
-    show.no = keyboard.nextInt();
-    keyboard.nextLine();
+    show.no = input.nextInt();
+    input.nextLine();
 
     System.out.print("국가? ");
-    show.country = keyboard.nextLine();
+    show.country = input.nextLine();
 
     System.out.print("장르? ");
-    show.genres = keyboard.nextLine();
+    show.genres = input.nextLine();
 
     System.out.print("제목한글? ");
-    show.titleKor = keyboard.nextLine();
+    show.titleKor = input.nextLine();
 
     System.out.print("제목영문? ");
-    show.titleEng = keyboard.nextLine();
+    show.titleEng = input.nextLine();
 
     System.out.print("별점? ");
-    show.ratedStar = keyboard.nextInt();
-    keyboard.nextLine();
+    show.ratedStar = input.nextInt();
+    input.nextLine();
 
     System.out.print("코멘트? ");
-    show.comments = keyboard.nextLine();
+    show.comments = input.nextLine();
 
     System.out.print("키워드? ");
-    show.keywords = keyboard.nextLine();
+    show.keywords = input.nextLine();
 
     System.out.print("시작일? ");
-    show.startDate = Date.valueOf(keyboard.nextLine()); 
+    show.startDate = Date.valueOf(input.nextLine()); 
 
     System.out.print("종료일? ");
-    show.endDate = Date.valueOf(keyboard.next()); 
-    keyboard.nextLine();
+    show.endDate = Date.valueOf(input.next()); 
+    input.nextLine();
 
     System.out.print("어디까지봤니? ");
-    show.watchedEpisode = keyboard.nextInt();
-    keyboard.nextLine();
+    show.watchedEpisode = input.nextInt();
+    input.nextLine();
 
     this.shows[this.showCount++] = show;
     System.out.println("저장하였습니다.");
