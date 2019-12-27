@@ -1,5 +1,7 @@
 package gomgugu.njp.tvlist.handler;
 
+//게시판 게시물은 언제든지 추가 될 수 있으므로 인스턴스로 만듬
+
 import java.sql.Date;
 import java.util.Scanner;
 import gomgugu.njp.tvlist.domain.Board;
@@ -18,10 +20,15 @@ public class BoardHandler {
   static final int BOARD_SIZE = 100;
   public static Scanner keyboard;
   
-  //클래스 메서드
-  // => 인스턴스 없이 호출하는 메서드이다.
-  // => 인스턴스를 사용하려면 파라미터를 통해 호출할 때 외부에서 받아야 한다.*** ()안에 파라미터 입력
-  public static void addBoard(BoardHandler boardHandler) {
+  //클래스 메서드 > 인스턴스메서드로 바꿈
+  // 보드핸들러 객체를 받아 인스턴스 필드를 사용하는 메서드는 > 인스턴스 메서드로 바꾸자!
+  // 인스턴스 메서드 
+  // => 인스턴스가 있어야만 호출할 수 있는 메서드이다.
+  // => 인스턴스를 사용하는 메서드인 경우 인스턴스 메서드로 선언하라.
+  // => 호출 할 때는 반드시 인스턴스 주소를 줘야 한다.
+  //    인스턴스주소.메서드명();
+  // => 이렇게 인스턴스의 변수 값을 다루는 메서드를 '연산자'라 부를 수 있다. operator
+  public void addBoard() {
     
     Board board = new Board();
 
@@ -39,29 +46,29 @@ public class BoardHandler {
 
     board.viewCount = 0;
 
-    boardHandler.boards[boardHandler.boardCount++] = board;
+    this.boards[this.boardCount++] = board;
     System.out.println("저장하였습니다.");
   }
   
   
-  public static void listBoard(BoardHandler boardHandler) {
-    for (int i = 0; i < boardHandler.boardCount; i++) {
-      Board b = boardHandler.boards[i];
+  public void listBoard() {
+    for (int i = 0; i < this.boardCount; i++) {
+      Board b = this.boards[i];
       System.out.printf("%d, %-20s, %s, %d\n", 
           b.no, b.title, b.date, b.viewCount);
     }
   }
   
   
-  public static void detailBoard(BoardHandler boardHandler) {
+  public void detailBoard() {
     System.out.println("게시물 번호? ");
     int no = keyboard.nextInt();
-    keyboard.nextLine(); //숫자 뒤에 남은 공백 제거
+    keyboard.nextLine();
     
     Board board = null;
-    for (int i = 0; i < boardHandler.boardCount; i++) {
-      if (boardHandler.boards[i].no == no) { // 보드i번방에 들어있는 i식판의 no번호와 사용자 입력번호를 비교해서 같다면 바로 그식판!
-        board = boardHandler.boards[i];
+    for (int i = 0; i < this.boardCount; i++) {
+      if (this.boards[i].no == no) {
+        board = this.boards[i];
         break;
       }
     }

@@ -18,8 +18,8 @@ public class MemberHandler {
   static final int MEMBER_SIZE = 100; 
   public static Scanner keyboard;
   
-  //클래스 메서드
-  public static void addMember(MemberHandler memberHandler) {
+  //클래스 메서드 > 인스턴스 메서드로
+  public void addMember() {
     Member member = new Member();
 
     System.out.print("번호? ");
@@ -44,14 +44,14 @@ public class MemberHandler {
     member.registeredDate = new Date(System.currentTimeMillis()); 
     keyboard.nextLine();
 
-    memberHandler.members[memberHandler.memberCount++] = member;
+    this.members[this.memberCount++] = member;
     System.out.println("저장하였습니다.");
   }    
   
   
-  public static void listMember(MemberHandler memberHandler) {
-    for (int i=0; i<memberHandler.memberCount; i++) {
-      Member m = memberHandler.members[i];
+  public void listMember() {
+    for (int i=0; i<this.memberCount; i++) {
+      Member m = this.members[i];
       System.out.printf("%d, %s, %-30s, %-15s %s\n", m.no, 
           m.name, m.email, m.tel, m.registeredDate);
     }

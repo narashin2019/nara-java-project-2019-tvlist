@@ -1,6 +1,6 @@
 // 프로젝트: 내가 본 드라마(TV Show) 목록 정리 및 공유
-// App에서 LessonHandler, MemberHandler, BoardHandler 클래스 소스코드 분리
-// 스캐너 키보드 객체설정, 호출 등 자세히 볼 것 
+//데이터는 개별로 관리하고 메서드는 공유한다 = 인스턴스 필드의 존재이유
+//스태틱 메서드를 인스턴스 메서드로 바꿔보자.
 
 package gomgugu.njp.tvlist;
 
@@ -11,18 +11,20 @@ import gomgugu.njp.tvlist.handler.ShowHandler;
 
 public class App {
   
+  //여러 메소드끼리 공유하니까 main메서드 밖으로 뺴고 static붙임
   static Scanner keyboard = new Scanner(System.in);
   
   public static void main(String[] args) {
     
     // LessonHandler, MemberHandler, BoardHandler 의 메서드를 사용하기 전에 
     // 그 메서드가 작업할 때 사용할 키보드 객체를 설정해줘야 한다.
+    // 따로 관리할 필요 없어서 클래스에서 공유하는 변수를 사용
     ShowHandler.keyboard = keyboard;
     MemberHandler.keyboard = keyboard;
     BoardHandler.keyboard = keyboard;
     
     // BoardHandler의 메서드가 사용할 메모리만 게시판마다 따로 생성한다.
-    // new BoardHandler(); 스태틱 안붙은 애들(메서드x 인스턴스 필트만)의 메모리 공간 Heap에 생성하고 그 주소를 boardHandler1에 저장하라
+    // new BoardHandler(); 스태틱 안붙은 애들(메서드x 인스턴스 필트만)의 메모리 공간 Heap에 생성하고 그 주소를 boardHandler에 저장하라
     BoardHandler boardHandler1 = new BoardHandler();
     BoardHandler boardHandler2 = new BoardHandler();
     BoardHandler boardHandler3 = new BoardHandler();
@@ -41,92 +43,92 @@ public class App {
 
       switch (command) {
         case "/show/add" :
-          //다른 클래스로 분리한 메서드를 호출할 때는 클래스를 이름을 지정해야 한다.
-          ShowHandler.addShow(정규드라마); // 파라미터로 어느 배열에 저장할 지 주소 줘.
+          //인스턴스 메서드 호출 방법
+          정규드라마.addShow();
           break;
 
         case "/show/list" :
-          ShowHandler.listShow(정규드라마);
+          정규드라마.listShow();
           break;
 
         case "/member/add" :
-          MemberHandler.addMember(일반회원);
+          일반회원.addMember();
           break;
 
         case "/member/list" :
-          MemberHandler.listMember(일반회원);
+          일반회원.listMember();
           break;
 
         case "/board/add" :
-          BoardHandler.addBoard(boardHandler1);
+          boardHandler1.addBoard();
           break;
 
         case "/board/list" :
-          BoardHandler.listBoard(boardHandler1);
+          boardHandler1.listBoard();
           break;     
           
         case "/board/detail" :
-          BoardHandler.detailBoard(boardHandler1);
+          boardHandler1.detailBoard();
           break;   
 
         case "/board2/add" :
-          BoardHandler.addBoard(boardHandler2);
+          boardHandler2.addBoard();
           break;
 
         case "/board2/list" :
-          BoardHandler.listBoard(boardHandler2);
+          boardHandler2.listBoard();
           break;        
           
         case "/board2/detail" :
-          BoardHandler.detailBoard(boardHandler2);
+          boardHandler2.detailBoard();
           break;   
           
         case "/board3/add" :
-          BoardHandler.addBoard(boardHandler3);
+          boardHandler3.addBoard();
           break;
 
         case "/board3/list" :
-          BoardHandler.listBoard(boardHandler3);
+          boardHandler3.listBoard();
           break;        
           
         case "/board3/detail" :
-          BoardHandler.detailBoard(boardHandler3);
+          boardHandler3.detailBoard();
           break; 
           
         case "/board4/add" :
-          BoardHandler.addBoard(boardHandler4);
+          boardHandler4.addBoard();
           break;
 
         case "/board4/list" :
-          BoardHandler.listBoard(boardHandler4);
+          boardHandler4.listBoard();
           break;        
           
         case "/board4/detail" :
-          BoardHandler.detailBoard(boardHandler4);
+          boardHandler4.detailBoard();
           break; 
           
         case "/board5/add" :
-          BoardHandler.addBoard(boardHandler5);
+          boardHandler5.addBoard();
           break;
 
         case "/board5/list" :
-          BoardHandler.listBoard(boardHandler5);
+          boardHandler5.listBoard();
           break;        
           
         case "/board5/detail" :
-          BoardHandler.detailBoard(boardHandler5);
+          boardHandler5.detailBoard();
           break; 
           
         case "/board6/add" :
-          BoardHandler.addBoard(boardHandler6);
+          boardHandler6.addBoard();
           break;
 
         case "/board6/list" :
-          BoardHandler.listBoard(boardHandler6);
+          boardHandler6.listBoard();
           break;        
           
         case "/board6/detail" :
-          BoardHandler.detailBoard(boardHandler6);
+          boardHandler6.detailBoard();
           break; 
           
         default : 
@@ -134,14 +136,11 @@ public class App {
             System.out.println("실행할 수 없는 명령입니다.");
           }
       }
-
     } while (!command.equalsIgnoreCase("quit"));
-    
     System.out.println("안녕!");
 
     keyboard.close();
+    
   } //main
-  
-  
 }//public class App
 
