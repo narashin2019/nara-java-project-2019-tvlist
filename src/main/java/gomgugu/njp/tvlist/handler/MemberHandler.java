@@ -9,7 +9,7 @@ public class MemberHandler {
   //인스턴스 필드 = 논 스태틱 필드
   // => 개별적으로 관리해야 하는 변수
   // => new 명령을 통해 생성된다.
-  Member[] members = new Member[MEMBER_SIZE];
+  Member[] members;
   int memberCount = 0;
   
   //클래스 필드 = 스태틱 필드
@@ -33,25 +33,25 @@ public class MemberHandler {
     Member member = new Member();
 
     System.out.print("번호? ");
-    member.no = input.nextInt();
+    member.setNo(input.nextInt());
     input.nextLine();
 
     System.out.print("이름? ");
-    member.name = input.nextLine();
+    member.setName(input.nextLine());
 
     System.out.print("이메일? ");
-    member.email = input.nextLine();
+    member.setEmail(input.nextLine());
 
     System.out.print("암호? ");
-    member.password = input.nextLine();
+    member.setPassword(input.nextLine());
 
     System.out.print("사진? ");
-    member.photo = input.nextLine();
+    member.setPhoto(input.nextLine());
 
     System.out.print("전화? ");
-    member.tel = input.nextLine();
+    member.setTel(input.nextLine());
 
-    member.registeredDate = new Date(System.currentTimeMillis()); 
+    member.setRegisteredDate(new Date(System.currentTimeMillis())); 
     input.nextLine();
 
     this.members[this.memberCount++] = member;
@@ -62,8 +62,8 @@ public class MemberHandler {
   public void listMember() {
     for (int i=0; i<this.memberCount; i++) {
       Member m = this.members[i];
-      System.out.printf("%d, %s, %-30s, %-15s %s\n", m.no, 
-          m.name, m.email, m.tel, m.registeredDate);
+      System.out.printf("%d, %s, %-30s, %-15s %s\n", m.getNo(), 
+          m.getName(), m.getEmail(), m.getTel(), m.getRegisteredDate());
     }
   }
   

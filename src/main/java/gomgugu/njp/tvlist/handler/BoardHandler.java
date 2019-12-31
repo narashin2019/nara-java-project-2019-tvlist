@@ -11,7 +11,7 @@ public class BoardHandler {
   //인스턴스 필드
   // => new 명령을 실행해야만 생성되는 변수이다. (클래스가 로딩되어도 존재하지 않음)
   // => 개별적으로 관리되어야 하는 값일 경우 인스턴스 필드로 선언한다. (static을 뺀다)
-  Board[] boards = new Board[BOARD_SIZE];
+  Board[] boards;
   int boardCount = 0;
 
   //이전까지 게시물 데이터를 입력받을 때 키보드에서 입력 받을 수 있지만,
@@ -68,18 +68,17 @@ public class BoardHandler {
     Board board = new Board();
 
     System.out.print("번호? ");
-    board.no = input.nextInt();
+    board.setNo(input.nextInt());
     input.nextLine(); 
 
     System.out.print("제목? ");
-    board.title = input.nextLine();
+    board.setTitle(input.nextLine());
 
     System.out.print("내용? ");
-    board.contents = input.nextLine();
+    board.setContents(input.nextLine());
 
-    board.date = new Date(System.currentTimeMillis());
-
-    board.viewCount = 0;
+    board.setDate(new Date(System.currentTimeMillis()));
+    board.setViewCount(0);
 
     this.boards[this.boardCount++] = board;
     System.out.println("저장하였습니다.");
@@ -90,7 +89,7 @@ public class BoardHandler {
     for (int i = 0; i < this.boardCount; i++) {
       Board b = this.boards[i];
       System.out.printf("%d, %-20s, %s, %d\n", 
-          b.no, b.title, b.date, b.viewCount);
+          b.getNo(), b.getTitle(), b.getDate(), b.getViewCount());
     }
   }
 
@@ -102,7 +101,7 @@ public class BoardHandler {
 
     Board board = null;
     for (int i = 0; i < this.boardCount; i++) {
-      if (this.boards[i].no == no) {
+      if (this.boards[i].getNo() == no) {
         board = this.boards[i];
         break;
       }
@@ -113,10 +112,10 @@ public class BoardHandler {
       return; //메소드의 리턴타입이 void일 경우 그냥 리턴만 쓰면 중단됨
     }
 
-    System.out.printf("번호: %d\n", board.no);
-    System.out.printf("제목: %s\n", board.title);
-    System.out.printf("등록일: %s\n", board.date);
-    System.out.printf("조회수: %d\n", board.viewCount);
+    System.out.printf("번호: %d\n", board.getNo());
+    System.out.printf("제목: %s\n", board.getTitle());
+    System.out.printf("등록일: %s\n", board.getDate());
+    System.out.printf("조회수: %d\n", board.getViewCount());
   }
 
 }
