@@ -6,24 +6,17 @@ import gomgugu.njp.tvlist.domain.Show;
 
 public class ShowHandler {
 
-  // 인스턴스 필드 (non-static field)
-  // => 각 드라마 목록을 개별적으로 관리
-  Show[] shows;
-  int showCount = 0;
-
+  ShowList showList;
+  
+  //public 빼도 되나?
   public Scanner input;
 
-  //클래스 필드 (static field)
-  // => 공유하는 변수
-  static final int SHOW_SIZE = 100;
-  
   public ShowHandler(Scanner input) {
     this.input = input;
-    this.shows = new Show[SHOW_SIZE];
+    showList = new ShowList();
   }
   
   
-  //클래스 메서드 > 인스턴스 메서드로!
   public void addShow() {
     Show show = new Show();
 
@@ -64,13 +57,14 @@ public class ShowHandler {
     show.setWatchedEpisode(input.nextInt());
     input.nextLine();
 
-    this.shows[this.showCount++] = show;
+    showList.add(show);
+    
     System.out.println("저장하였습니다.");
   }
   
   public void listShow() {
-    for (int i = 0; i < this.showCount; i++) {
-      Show s = this.shows[i];
+    Show[] shows = showList.toArray();
+    for (Show s : shows) {
       System.out.printf("%d, %-20s, %s ~ %s, %d\n", 
           s.getNo(), s.getTitleKor(), s.getStartDate(), 
           s.getEndDate(), s.getWatchedEpisode());
