@@ -6,14 +6,14 @@ import gomgugu.njp.tvlist.domain.Show;
 
 public class ShowHandler {
 
-  ShowList showList;
+  ArrayList showList;
   
   //public 빼도 되나?
   public Scanner input;
 
   public ShowHandler(Scanner input) {
     this.input = input;
-    showList = new ShowList();
+    showList = new ArrayList();
   }
   
   
@@ -63,8 +63,9 @@ public class ShowHandler {
   }
   
   public void listShow() {
-    Show[] shows = showList.toArray();
-    for (Show s : shows) {
+    Object[] arr = showList.toArray();
+    for (Object obj : arr) {
+      Show s = (Show) obj;
       System.out.printf("%d, %-20s, %s ~ %s, %d\n", 
           s.getNo(), s.getTitleKor(), s.getStartDate(), 
           s.getEndDate(), s.getWatchedEpisode());

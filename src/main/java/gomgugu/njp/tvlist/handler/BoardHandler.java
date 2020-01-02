@@ -6,18 +6,18 @@ import gomgugu.njp.tvlist.domain.Board;
 
 public class BoardHandler {
 
-  BoardList boardList;
+  ArrayList boardList;
   
-  public Scanner input;
+  Scanner input;
   
   public BoardHandler(Scanner input) {
     this.input = input;
-    boardList = new BoardList();
+    boardList = new ArrayList();
   }
 
   public BoardHandler(Scanner input, int capacity) {
     this.input = input;
-    boardList = new BoardList(capacity);
+    this.boardList = new ArrayList(capacity);
   }
   
   public void addBoard() {
@@ -43,8 +43,9 @@ public class BoardHandler {
   
   
   public void listBoard() {
-    Board[] boards = boardList.toArray();
-    for (Board b : boards) {
+    Object[] arr = this.boardList.toArray();
+    for (Object obj : arr) {
+      Board b = (Board) obj;
       System.out.printf("%d, %-20s, %s, %d\n", 
           b.getNo(), b.getTitle(), b.getDate(), b.getViewCount());
     }
@@ -52,14 +53,14 @@ public class BoardHandler {
   
   
   public void detailBoard() {
-    System.out.println("게시물 번호? ");
-    int no = input.nextInt();
+    System.out.println("게시물 인덱스? ");
+    int index = input.nextInt();
     input.nextLine();
     
-    Board board = boardList.get(no);
+    Board board = (Board) this.boardList.get(index);
     
     if (board == null) {
-      System.out.println("게시물 번호가 유효하지 않습니다.");
+      System.out.println("게시물 인덱스가 유효하지 않습니다.");
       return;
     }
 

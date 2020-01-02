@@ -6,18 +6,16 @@ import gomgugu.njp.tvlist.domain.Member;
 
 public class MemberHandler {
   
-  MemberList memberList;
+  ArrayList memberList;
   
   public Scanner input;
   
-  //생성자 / 공개로 해야함./this라는 내장 파라미터 있음
   public MemberHandler(Scanner input) {
     this.input = input;
-    memberList = new MemberList();
+    memberList = new ArrayList();
   }
   
   
-  //클래스 메서드 > 인스턴스 메서드로
   public void addMember() {
     Member member = new Member();
 
@@ -43,14 +41,15 @@ public class MemberHandler {
     member.setRegisteredDate(new Date(System.currentTimeMillis())); 
     input.nextLine();
 
-    memberList.add(member);
+    this.memberList.add(member);
     System.out.println("저장하였습니다.");
   }    
   
   
   public void listMember() {
-    Member[] members = memberList.toArray();
-    for (Member m : members) {
+    Object[] arr = this.memberList.toArray();
+    for (Object obj : arr) {
+      Member m = (Member) obj;
       System.out.printf("%d, %s, %-30s, %-15s %s\n", m.getNo(), 
           m.getName(), m.getEmail(), m.getTel(), m.getRegisteredDate());
     }
