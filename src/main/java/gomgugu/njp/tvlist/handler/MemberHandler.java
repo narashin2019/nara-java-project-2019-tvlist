@@ -3,16 +3,16 @@ package gomgugu.njp.tvlist.handler;
 import java.sql.Date;
 import java.util.Scanner;
 import gomgugu.njp.tvlist.domain.Member;
+import gomgugu.njp.util.ArrayList;
 
 public class MemberHandler {
   
-  ArrayList memberList;
-  
-  public Scanner input;
+  ArrayList<Member> memberList;
+  Scanner input; // default나 private. 생성자로 받기 때문
   
   public MemberHandler(Scanner input) {
     this.input = input;
-    memberList = new ArrayList();
+    memberList = new ArrayList<>();
   }
   
   
@@ -47,9 +47,10 @@ public class MemberHandler {
   
   
   public void listMember() {
-    Object[] arr = this.memberList.toArray();
-    for (Object obj : arr) {
-      Member m = (Member) obj;
+    // Member 객체의 목록을 저장할 배열을 넘기는데 크기가 0인 배열을 넘긴다.
+    // toArray()는 내부에서 새 배열을 만들고, 값을 복사한 후 리턴한다.(리턴값은 새배열!)
+    Member[] arr = this.memberList.toArray(new Member[] {});
+    for (Member m : arr) {
       System.out.printf("%d, %s, %-30s, %-15s %s\n", m.getNo(), 
           m.getName(), m.getEmail(), m.getTel(), m.getRegisteredDate());
     }
