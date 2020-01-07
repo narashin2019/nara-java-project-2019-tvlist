@@ -11,9 +11,11 @@ public class ArrayList<E> {
   Object[] list;
   int size = 0; // 뉴 했을떄 만들어지는 메모리의 설계도
 
+
   public ArrayList() {
     this.list = new Object[DEFAULT_CAPACITY];
   }
+
 
   public ArrayList(int capacity) {
     if(capacity < DEFAULT_CAPACITY || capacity >10000)
@@ -21,6 +23,7 @@ public class ArrayList<E> {
     else
       this.list = new Object[capacity];
   }
+
 
   @SuppressWarnings("unchecked")
   public E[] toArray(E[] arr) { // 제네릭은  E[] arr = new = E[100]; 이거 안됨  배열을 뉴로 못만듬
@@ -42,8 +45,6 @@ public class ArrayList<E> {
   }
 
 
-
-
   public void add(E obj) {
     if(this.size == this.list.length) {
       int oldCapacity = this.list.length;
@@ -54,14 +55,57 @@ public class ArrayList<E> {
   }
 
 
+  //목록의 특정 위치에 저장된 항목을 꺼내주는 get()
   @SuppressWarnings("unchecked")
-  public E get(int idx) {
-    if (idx >= 0 && idx < this.size) {
-      return (E)this.list[idx]; //타입캐스팅
+  public E get(int index) {
+    if (index >= 0 && index < this.size) {
+      return (E) this.list[index]; //타입캐스팅
     } else {
       return null;
     }
   }
+
+
+  //목록의 특정 위치에 저장된 항목을 바꾸는 set()
+  @SuppressWarnings("unchecked")
+  public E set(int index, E obj) {
+    if (index < 0 || index >= this.size)
+      return null;
+
+    E old = (E) this.list[index];
+    this.list[index] = obj;
+
+    return old;
+  }
+
+
+  //목록의 특정 위치에 저장된 항목을 삭제하는 remove()
+  @SuppressWarnings("unchecked")
+  public E remove(int index) {
+    if (index < 0 || index >= this.size)
+      return null;
+
+    //삭제할 항목을 따로 보관해 둔다. 왜...?
+    E old = (E) this.list[index];
+
+    for (int i = index + 1; i < this.size; i++) {
+      this.list[i - 1] = this.list[i];
+    }
+
+    this.size--;
+
+    this.list[this.size] = null;
+
+    // 삭제한 항목을 리턴한다. 왜????
+    return old;
+
+  }
+
+
+
+
+
+
 
 
   public int size() {
