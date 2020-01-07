@@ -102,16 +102,36 @@ public class ArrayList<E> {
   }
 
 
-
-
-
-
-
-
   public int size() {
     return this.size; //this는 생략가능. this변수에 들어있는 size
   }
 
+  
+  public static void main(String[] args) {
+    ArrayList<String> list = new ArrayList<>();
+    list.add("aaaa");
+    list.add("bbbb");
+    list.add("cccc");
+    list.add("dddd");
+    list.add("eeee");
+    list.add("ffff");
+    
+    //list.remove(6);
+//    list.set(0, "0000");
+//    list.set(3, "3333");
+//    list.set(5, "5555");
+//    list.set(-1, "ㅋㅋㅋㅋ");
+//    list.set(6, "^^^^^^");
+    
+    
+    String[] arr = list.toArray(new String[] {});
+    for (String s : arr) {
+      System.out.println(s);
+    }
+    
+    
+  }
+  
 }
 
 //copyOf () 메서드야

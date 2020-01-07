@@ -8,22 +8,22 @@ import gomgugu.njp.util.ArrayList;
 public class ShowHandler {
 
   ArrayList<Show> showList;
-  
+
   Scanner input;
 
-  
+
   public ShowHandler(Scanner input) {
     this.input = input;
     this.showList = new ArrayList<>();
   }
-  
-  
+
+
   public ShowHandler(Scanner input, int capacity) {
     this.input = input;
     this.showList = new ArrayList<>(capacity); 
   }
-  
-  
+
+
   public void addShow() {
     Show show = new Show();
 
@@ -65,98 +65,125 @@ public class ShowHandler {
     input.nextLine();
 
     showList.add(show);
-    
+
     System.out.println("저장하였습니다.");
   }
-  
-  
+
+
   public void listShow() {
     // 수업 객체 목록을 복사 받을 배열을 준비하고, toArray()를 실행한다.
     // toArray()의 리턴 값은 파라미터로 넘겨준 배열의 주소이다. (기존배열그대로씀)
     Show[] arr = this.showList.toArray(new Show[this.showList.size()]);
-    
+
     for (Show s : arr) {
       System.out.printf("%d, %-20s, %s ~ %s, %d\n", 
           s.getNo(), s.getTitleKor(), s.getStartDate(), 
           s.getEndDate(), s.getWatchedEpisode());
     }
   }
-  
-  
+
+
+
   public void detailShow() {
     System.out.println("번호? ");
     int index = input.nextInt();
     input.nextLine();
-    
-    Show show = (Show) this.showList.get(index);
-    
+
+    Show show = (Show) this.showList.get(index); //(Show) 가 있는것 ㅇㅄ는것으 ㅣ차이?
+
     if (show == null) {
       System.out.println("해당 드라마를 찾을 수 없습니다.");
       return;
     }
-    
+
     System.out.printf("제목한글: %s\n", show.getTitleKor());
     System.out.printf("제목영문: %s\n", show.getTitleEng());
     System.out.printf("기간: %s ~ %s\n", show.getStartDate(), show.getEndDate());
-    System.out.printf("별점: %s\n", show.getRatedStar());
-    System.out.printf("어디까지봤니: %s\n", show.getWatchedEpisode());
+    System.out.printf("별점: %d\n", show.getRatedStar());
+    System.out.printf("키워드: %s\n", show.getKeywords());
+    System.out.printf("어디까지봤니: %d\n", show.getWatchedEpisode());
   }
-  
-  
+
+
   public void updateShow() {
     System.out.println("번호? ");
     int index = input.nextInt();
     input.nextLine();
+
+    Show oldShow = this.showList.get(index); 
+
+    if (oldShow == null) {
+      System.out.println("해당 드라마를 찾을 수 없습니다.");
+      return;
+    }
+
+    System.out.printf("제목한글(%s)? ", oldShow.getTitleKor());
+    String titleKor = input.nextLine();
+
+    System.out.printf("제목영문(%s)? ", oldShow.getTitleEng());
+    String titleEng = input.nextLine();
+
+    System.out.printf("시작일(%s)? ", oldShow.getStartDate());
+    Date startDate = Date.valueOf(input.next());
+
+    System.out.printf("종료일(%s)? ", oldShow.getEndDate());
+    Date endDate = Date.valueOf(input.next());
+
+    System.out.printf("별점(%d)? ", oldShow.getRatedStar());
+    int ratedStar = input.nextInt();
+    input.nextLine();
     
-    Show oldShow = (Lesson) this.lessonList.get(index); 
+    System.out.printf("키워드(%s)? ", oldShow.getKeywords());
+    String keywords = input.nextLine();
+
+    System.out.printf("어디까지봤니(%d)? ", oldShow.getWatchedEpisode());
+    int watchedEpisode = input.nextInt();
+    input.nextLine();
+
+    //    if (description.length() == 0) {
+    //      System.out.println("수업정보 변경을 취소했습니다.");
+    //      return;
+    //    }
+
+
+
+    Show newShow = new Show();
+    newShow.setNo(oldShow.getNo());
+    newShow.setTitleKor(titleKor);
+    newShow.setTitleEng(titleEng);
+    newShow.setStartDate(startDate);
+    newShow.setEndDate(endDate);
+    newShow.setRatedStar(ratedStar);
+    newShow.setKeywords(keywords);
+    newShow.setWatchedEpisode(watchedEpisode);
+
+    this.showList.set(index, newShow);
+
+    System.out.println("드라마 정보를 변경했습니다.");
+  }
+
+  
+  public void deleteShow() {
+    System.out.print("게시글 인덱스? ");
+    int index = input.nextInt();
+    input.nextLine(); // 숫자 뒤의 남은 공백 제거
     
-    if (oldLesson == null) {
-      System.out.println("해당 수업을 찾을 수 없습니다.");
+    Show show = this.showList.get(index);
+    
+    if (show == null) {
+      System.out.println("게시글 인덱스가 유효하지 않습니다.");
       return;
     }
     
-    System.out.printf("수업명(%s)? ", oldLesson.getTitle());
-    String title = input.nextLine();
+    this.showList.remove(index);
     
-    
-    System.out.printf("수업내용? ", oldLesson.getDescription());
-    String description = input.nextLine();
-
-//    if (description.length() == 0) {
-//      System.out.println("수업정보 변경을 취소했습니다.");
-//      return;
-//    }
-    
-    System.out.printf("시작일(%s)? ", oldLesson.getStartDate());
-    Date startDate = Date.valueOf(input.next());
-      
-    System.out.printf("종료일(%s)? ", oldLesson.getEndDate());
-    Date endDate = Date.valueOf(input.next());
-    
-    System.out.printf("총수업시간(%s)? ", oldLesson.getDescription());
-    int totalHours = input.nextInt();
-    
-    System.out.printf("일수업시간(%s)? ", oldLesson.getDescription());
-    int dayHours = input.nextInt();
-    input.nextLine(); 
-    
-    
-    
-    
-    Lesson newLesson = new Lesson();
-    newLesson.setNo(oldLesson.getNo());
-    newLesson.setTitle(title);
-    newLesson.setDescription(description);
-    newLesson.setStartDate(startDate);
-    newLesson.setEndDate(endDate);
-    newLesson.setTotalHours(totalHours);
-    newLesson.setDayHours(dayHours);
-    
-    this.lessonList.set(index, newLesson);
-    
-    System.out.println("수업을 변경했습니다.");
+    System.out.println("게시글을 삭제했습니다.");
   }
+
   
   
   
+  
+  
+
 }

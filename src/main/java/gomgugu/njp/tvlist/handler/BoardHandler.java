@@ -1,6 +1,5 @@
 package gomgugu.njp.tvlist.handler;
-//클래스를 다룰때 메서드마다 어떤 타입의 데이터 다루는지 리턴이나 파라미터에 특정타입으로만 동작하도록 제한거는것
-// = 제네릭문법
+
 import java.sql.Date;
 import java.util.Scanner;
 import gomgugu.njp.tvlist.domain.Board;
@@ -13,7 +12,7 @@ public class BoardHandler {
 
   public BoardHandler(Scanner input) {
     this.input = input;
-    boardList = new ArrayList<>(); // <Board>에서 보드 생략가능 <>는 그대로
+    this.boardList = new ArrayList<>(); // <Board>에서 보드 생략가능 <>는 그대로
   }
 
   public BoardHandler(Scanner input, int capacity) {
@@ -21,6 +20,7 @@ public class BoardHandler {
     this.boardList = new ArrayList<>(capacity); // <Board>보드 생략가능
   }
 
+  
   public void addBoard() {
 
     Board board = new Board();
@@ -74,5 +74,56 @@ public class BoardHandler {
     System.out.printf("등록일: %s\n", board.getDate());
     System.out.printf("조회수: %d\n", board.getViewCount());
   }
-
+   
+  
+  public void updateBoard() {
+    System.out.print("게시글 인덱스? ");
+    int index = input.nextInt();
+    input.nextLine(); // 숫자 뒤의 남은 공백 제거
+    
+    Board oldBoard = this.boardList.get(index);
+    
+    if (oldBoard == null) {
+      System.out.println("게시글 인덱스가 유효하지 않습니다.");
+      return;
+    }
+    
+    System.out.printf("내용(%s)? ", oldBoard.getTitle());
+    String title = input.nextLine();
+    
+    if (title.length() == 0) {
+      System.out.println("게시글 변경을 취소했습니다.");
+      return;
+    }
+    
+    Board newBoard = new Board();
+    newBoard.setNo(oldBoard.getNo());
+    newBoard.setViewCount(oldBoard.getViewCount());
+    newBoard.setTitle(title);
+    newBoard.setDate(new Date(System.currentTimeMillis()));
+    
+    this.boardList.set(index, newBoard);
+    
+    System.out.println("게시글을 변경했습니다.");
+  }
+  
+  public void deleteBoard() {
+    System.out.print("게시글 인덱스? ");
+    int index = input.nextInt();
+    input.nextLine(); // 숫자 뒤의 남은 공백 제거
+    
+    Board board = this.boardList.get(index);
+    
+    if (board == null) {
+      System.out.println("게시글 인덱스가 유효하지 않습니다.");
+      return;
+    }
+    
+    this.boardList.remove(index);
+    
+    System.out.println("게시글을 삭제했습니다.");
+  }
+  
+  
+  
 }

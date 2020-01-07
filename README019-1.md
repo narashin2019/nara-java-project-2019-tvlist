@@ -7,10 +7,10 @@
 ## 실습 소스 및 결과
 
 util/ArrayList.java 변경
-handler/LessonHandler.java 변경
+handler/ShowHandler.java 변경
 handler/MemberHandler.java 변경
 handler/BoardHandler.java 변경
-domain/Lesson.java 변경
+domain/Show.java 변경
 domain/Member.java 변경
 domain/Board.java 변경
 App.java 변경
