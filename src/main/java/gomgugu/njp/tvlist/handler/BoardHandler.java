@@ -12,12 +12,12 @@ public class BoardHandler {
 
   public BoardHandler(Scanner input) {
     this.input = input;
-    this.boardList = new ArrayList<>(); // <Board>에서 보드 생략가능 <>는 그대로
+    this.boardList = new ArrayList<>(); // <Board>에서 Board 생략가능 <>는 그대로
   }
 
   public BoardHandler(Scanner input, int capacity) {
     this.input = input;
-    this.boardList = new ArrayList<>(capacity); // <Board>보드 생략가능
+    this.boardList = new ArrayList<>(capacity); // <Board>에서 Board 생략가능 <>는 그대로
   }
 
   
@@ -29,11 +29,8 @@ public class BoardHandler {
     board.setNo(input.nextInt());
     input.nextLine(); 
 
-    System.out.print("제목? ");
-    board.setTitle(input.nextLine());
-
     System.out.print("내용? ");
-    board.setContents(input.nextLine());
+    board.setTitle(input.nextLine());
 
     board.setDate(new Date(System.currentTimeMillis()));
     board.setViewCount(0);
@@ -62,7 +59,7 @@ public class BoardHandler {
     int index = input.nextInt();
     input.nextLine();
 
-    Board board = (Board) this.boardList.get(index);
+    Board board = this.boardList.get(index);
 
     if (board == null) {
       System.out.println("게시물 인덱스가 유효하지 않습니다.");
@@ -70,7 +67,7 @@ public class BoardHandler {
     }
 
     System.out.printf("번호: %d\n", board.getNo());
-    System.out.printf("제목: %s\n", board.getTitle());
+    System.out.printf("내용: %s\n", board.getTitle());
     System.out.printf("등록일: %s\n", board.getDate());
     System.out.printf("조회수: %d\n", board.getViewCount());
   }
