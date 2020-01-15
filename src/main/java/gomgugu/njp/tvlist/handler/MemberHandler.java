@@ -80,13 +80,11 @@ public class MemberHandler {
   }
   
   
-  /**
-   * 
-   */
+ 
   public void updateMember() {
     System.out.print("번호? ");
     int index = input.nextInt();
-    input.nextLine(); // 숫자 뒤의 남은 공백 제거
+    input.nextLine();
     
     Member oldMember = this.memberList.get(index);
     
@@ -95,42 +93,66 @@ public class MemberHandler {
       return;
     }
     
+    boolean changed = false;
+    String inputStr = null;
+    Member newMember = new Member();
+    
+    newMember.setNo(oldMember.getNo());
+    
     System.out.printf("이름(%s)? ", oldMember.getName());
-    String name = input.nextLine();
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newMember.setName(oldMember.getName());
+    } else {
+      newMember.setName(inputStr);
+      changed = true;
+    }
 
     System.out.printf("이메일(%s)? ", oldMember.getEmail());
-    String email = input.nextLine();
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newMember.setEmail(oldMember.getEmail());
+    } else {
+      newMember.setEmail(inputStr);
+      changed = true;
+    }
 
     System.out.printf("암호(%s)? ", oldMember.getPassword());
-    String password = input.nextLine();
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newMember.setPassword(oldMember.getPassword());
+    } else {
+      newMember.setPassword(inputStr);
+      changed = true;
+    }
 
     System.out.printf("사진(%s)? ", oldMember.getPhoto());
-    String photo = input.nextLine();
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newMember.setPhoto(oldMember.getPhoto());
+    } else {
+      newMember.setPhoto(inputStr);
+      changed = true;
+    }
 
     System.out.printf("전화(%s)? ", oldMember.getTel());
-    String tel = input.nextLine();
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newMember.setTel(oldMember.getTel());
+    } else {
+      newMember.setTel(inputStr);
+      changed = true;
+    }
 
-    Date registeredDate = new Date(System.currentTimeMillis()); 
-    input.nextLine();
+    //Date registeredDate = new Date(System.currentTimeMillis()); 
+    //input.nextLine();
     
-    
-//    if (title.length() == 0) {
-//      System.out.println("게시글 변경을 취소했습니다.");
-//      return;
-//    }
-    
-    Member newMember = new Member();
-    newMember.setNo(oldMember.getNo());
-    newMember.setName(name);
-    newMember.setName(email);
-    newMember.setName(password);
-    newMember.setName(photo);
-    newMember.setName(tel);
-    newMember.setRegisteredDate(oldMember.getRegisteredDate());
-    
-    this.memberList.set(index, newMember);
-    
-    System.out.println("회원정보를 변경했습니다.");
+    if (changed) {
+      this.memberList.set(index, newMember);
+      System.out.println("회원을 변경했습니다.");
+    } else {
+      System.out.println("회원 변경을 취소하였습니다.");
+    }
   }
   
   

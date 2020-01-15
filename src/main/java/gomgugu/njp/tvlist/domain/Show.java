@@ -8,14 +8,12 @@ public class Show {
   private String genres;
   private String titleKor;
   private String titleEng;
-  private int ratedStar;
+  private int point;
   private String comments;
   private String keywords;
   private Date startDate;
   private Date endDate;
   private int watchedEpisode;
-  
-  
   public int getNo() {
     return no;
   }
@@ -46,11 +44,11 @@ public class Show {
   public void setTitleEng(String titleEng) {
     this.titleEng = titleEng;
   }
-  public int getRatedStar() {
-    return ratedStar;
+  public int getPoint() {
+    return point;
   }
-  public void setRatedStar(int ratedStar) {
-    this.ratedStar = ratedStar;
+  public void setPoint(int point) {
+    this.point = point;
   }
   public String getComments() {
     return comments;

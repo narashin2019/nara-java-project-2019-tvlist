@@ -18,12 +18,6 @@ public class ShowHandler {
   }
 
 
-  public ShowHandler(Scanner input, int capacity) {
-    this.input = input;
-    this.showList = new ArrayList<>(capacity); 
-  }
-
-
   public void addShow() {
     Show show = new Show();
 
@@ -44,7 +38,7 @@ public class ShowHandler {
     show.setTitleEng(input.nextLine());
 
     System.out.print("별점? ");
-    show.setRatedStar(input.nextInt());
+    show.setPoint(input.nextInt());
     input.nextLine();
 
     System.out.print("코멘트? ");
@@ -89,7 +83,7 @@ public class ShowHandler {
     int index = input.nextInt();
     input.nextLine();
 
-    Show show = (Show) this.showList.get(index); //(Show) 가 있는것 ㅇㅄ는것으 ㅣ차이?
+    Show show = this.showList.get(index);
 
     if (show == null) {
       System.out.println("해당 드라마를 찾을 수 없습니다.");
@@ -99,7 +93,7 @@ public class ShowHandler {
     System.out.printf("제목한글: %s\n", show.getTitleKor());
     System.out.printf("제목영문: %s\n", show.getTitleEng());
     System.out.printf("기간: %s ~ %s\n", show.getStartDate(), show.getEndDate());
-    System.out.printf("별점: %d\n", show.getRatedStar());
+    System.out.printf("별점: %d\n", show.getPoint());
     System.out.printf("키워드: %s\n", show.getKeywords());
     System.out.printf("어디까지봤니: %d\n", show.getWatchedEpisode());
   }
@@ -117,67 +111,103 @@ public class ShowHandler {
       return;
     }
 
+    boolean changed = false;
+    String inputStr = null;
+    Show newShow = new Show();
+    
+    newShow.setNo(oldShow.getNo());
+    
     System.out.printf("제목한글(%s)? ", oldShow.getTitleKor());
-    String titleKor = input.nextLine();
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newShow.setTitleKor(oldShow.getTitleKor());
+    } else {
+      newShow.setTitleKor(inputStr);
+      changed = true;
+    }
 
     System.out.printf("제목영문(%s)? ", oldShow.getTitleEng());
-    String titleEng = input.nextLine();
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newShow.setTitleEng(oldShow.getTitleEng());
+    } else {
+      newShow.setTitleEng(inputStr);
+      changed = true;
+    }
 
     System.out.printf("시작일(%s)? ", oldShow.getStartDate());
-    Date startDate = Date.valueOf(input.next());
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newShow.setStartDate(oldShow.getStartDate());
+    } else {
+      newShow.setStartDate(Date.valueOf(inputStr));
+      changed = true;
+    }
 
     System.out.printf("종료일(%s)? ", oldShow.getEndDate());
-    Date endDate = Date.valueOf(input.next());
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newShow.setEndDate(oldShow.getEndDate());
+    } else {
+      newShow.setEndDate(Date.valueOf(inputStr));
+      changed = true;
+    }
 
-    System.out.printf("별점(%d)? ", oldShow.getRatedStar());
-    int ratedStar = input.nextInt();
-    input.nextLine();
+
+    System.out.printf("별점(%d)? ", oldShow.getPoint());
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newShow.setPoint(oldShow.getPoint());
+    } else {
+      newShow.setPoint(Integer.parseInt(inputStr));
+      changed = true;
+    }
+    
     
     System.out.printf("키워드(%s)? ", oldShow.getKeywords());
-    String keywords = input.nextLine();
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newShow.setKeywords(oldShow.getKeywords());
+    } else {
+      newShow.setKeywords(inputStr);
+      changed = true;
+    }
 
     System.out.printf("어디까지봤니(%d)? ", oldShow.getWatchedEpisode());
-    int watchedEpisode = input.nextInt();
-    input.nextLine();
+    inputStr = input.nextLine();
+    if (inputStr.length() == 0) {
+      newShow.setWatchedEpisode(oldShow.getWatchedEpisode());
+    } else {
+      newShow.setWatchedEpisode(Integer.parseInt(inputStr));
+      changed = true;
+    }
 
-    //    if (description.length() == 0) {
-    //      System.out.println("수업정보 변경을 취소했습니다.");
-    //      return;
-    //    }
-
-
-
-    Show newShow = new Show();
-    newShow.setNo(oldShow.getNo());
-    newShow.setTitleKor(titleKor);
-    newShow.setTitleEng(titleEng);
-    newShow.setStartDate(startDate);
-    newShow.setEndDate(endDate);
-    newShow.setRatedStar(ratedStar);
-    newShow.setKeywords(keywords);
-    newShow.setWatchedEpisode(watchedEpisode);
-
-    this.showList.set(index, newShow);
-
-    System.out.println("드라마 정보를 변경했습니다.");
+    if (changed) {
+      this.showList.set(index, newShow);
+      System.out.println("드라마 정보를 변경했습니다.");
+    } else {
+      System.out.println("변경을 취소하였습니다.");
+    }
   }
+
+
 
   
   public void deleteShow() {
-    System.out.print("게시글 인덱스? ");
+    System.out.print("드라마 인덱스? ");
     int index = input.nextInt();
     input.nextLine(); // 숫자 뒤의 남은 공백 제거
     
     Show show = this.showList.get(index);
     
     if (show == null) {
-      System.out.println("게시글 인덱스가 유효하지 않습니다.");
+      System.out.println("드라마인덱스가 유효하지 않습니다.");
       return;
     }
     
     this.showList.remove(index);
     
-    System.out.println("게시글을 삭제했습니다.");
+    System.out.println("드라마를 삭제했습니다.");
   }
 
   

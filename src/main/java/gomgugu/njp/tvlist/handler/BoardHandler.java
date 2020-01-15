@@ -29,9 +29,16 @@ public class BoardHandler {
     board.setNo(input.nextInt());
     input.nextLine(); 
 
-    System.out.print("내용? ");
+    System.out.print("제목? ");
     board.setTitle(input.nextLine());
-
+    
+    System.out.print("내용? ");
+    board.setContents(input.nextLine());
+    
+    System.out.print("작성자? ");
+    board.setWriter(input.nextLine());
+    
+    
     board.setDate(new Date(System.currentTimeMillis()));
     board.setViewCount(0);
 
@@ -67,7 +74,7 @@ public class BoardHandler {
     }
 
     System.out.printf("번호: %d\n", board.getNo());
-    System.out.printf("내용: %s\n", board.getTitle());
+    System.out.printf("제목: %s\n", board.getTitle());
     System.out.printf("등록일: %s\n", board.getDate());
     System.out.printf("조회수: %d\n", board.getViewCount());
   }
@@ -85,10 +92,10 @@ public class BoardHandler {
       return;
     }
     
-    System.out.printf("내용(%s)? ", oldBoard.getTitle());
-    String title = input.nextLine();
+    System.out.printf("내용(%s)? ", oldBoard.getContents());
+    String contents = input.nextLine();
     
-    if (title.length() == 0) {
+    if (contents.length() == 0) {
       System.out.println("게시글 변경을 취소했습니다.");
       return;
     }
@@ -96,7 +103,8 @@ public class BoardHandler {
     Board newBoard = new Board();
     newBoard.setNo(oldBoard.getNo());
     newBoard.setViewCount(oldBoard.getViewCount());
-    newBoard.setTitle(title);
+    newBoard.setTitle(oldBoard.getTitle());
+    newBoard.setTitle(contents);
     newBoard.setDate(new Date(System.currentTimeMillis()));
     
     this.boardList.set(index, newBoard);
