@@ -3,7 +3,6 @@ package gomgugu.njp.tvlist.domain;
 import java.sql.Date;
 
 public class Board{
-  
   private int no; 
   private String title;  
   private String contents;

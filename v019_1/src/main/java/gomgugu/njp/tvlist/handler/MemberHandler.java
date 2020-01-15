@@ -6,18 +6,18 @@ import gomgugu.njp.tvlist.domain.Member;
 import gomgugu.njp.util.ArrayList;
 
 public class MemberHandler {
-
+  
   ArrayList<Member> memberList;
   Scanner input; // default나 private. 생성자로 받기 때문
-
-
+  
+  //생성자 왜 한 개죠
   public MemberHandler(Scanner input) {
     this.input = input;
     memberList = new ArrayList<>();
   }
-
-
-
+  
+  
+  
   public void addMember() {
     Member member = new Member();
 
@@ -46,8 +46,8 @@ public class MemberHandler {
     this.memberList.add(member);
     System.out.println("저장하였습니다.");
   }    
-
-
+  
+  
   public void listMember() {
     // Member 객체의 목록을 저장할 배열을 넘기는데 크기가 0인 배열을 넘긴다.
     // toArray()는 내부에서 새 배열을 만들고, 값을 복사한 후 리턴한다.(리턴값은 새배열!)
@@ -57,22 +57,20 @@ public class MemberHandler {
           m.getName(), m.getEmail(), m.getTel(), m.getRegisteredDate());
     }
   }
-
-
+  
+    
   public void detailMember() {
     System.out.print("번호? ");
-    int no = input.nextInt();
-    input.nextLine(); // 숫자 뒤의 남은 공백 제거
-
-    int index = indexOfMember(no);
-
-    if (index == -1) {
-      System.out.println("해당 번호의 회원이 없습니다.");
+    int index = input.nextInt();
+    input.nextLine(); 
+    
+    Member member = this.memberList.get(index);
+    
+    if (member == null) {
+      System.out.println("회원 번호가 유효하지 않습니다.");
       return;
     }
-
-    Member member = this.memberList.get(index);
-
+    
     System.out.printf("이름: %s\n", member.getName());
     System.out.printf("이메일: %s\n", member.getEmail());
     System.out.printf("암호: %s\n", member.getPassword());
@@ -80,30 +78,27 @@ public class MemberHandler {
     System.out.printf("전화: %s\n", member.getTel());
     System.out.printf("가입일: %s\n", member.getRegisteredDate());
   }
-
-
-
+  
+  
+ 
   public void updateMember() {
     System.out.print("번호? ");
-    int no = input.nextInt();
-    input.nextLine(); // 숫자 뒤의 남은 공백 제거
-
-    int index = indexOfMember(no);
-
-    if (index == -1) {
-      System.out.println("해당 번호의 회원이 없습니다.");
+    int index = input.nextInt();
+    input.nextLine();
+    
+    Member oldMember = this.memberList.get(index);
+    
+    if (oldMember == null) {
+      System.out.println("회원 번호가 유효하지 않습니다.");
       return;
     }
-
-
-    Member oldMember = this.memberList.get(index);
-
+    
     boolean changed = false;
     String inputStr = null;
     Member newMember = new Member();
-
+    
     newMember.setNo(oldMember.getNo());
-
+    
     System.out.printf("이름(%s)? ", oldMember.getName());
     inputStr = input.nextLine();
     if (inputStr.length() == 0) {
@@ -151,7 +146,7 @@ public class MemberHandler {
 
     //Date registeredDate = new Date(System.currentTimeMillis()); 
     //input.nextLine();
-
+    
     if (changed) {
       this.memberList.set(index, newMember);
       System.out.println("회원을 변경했습니다.");
@@ -159,32 +154,26 @@ public class MemberHandler {
       System.out.println("회원 변경을 취소하였습니다.");
     }
   }
-
-
+  
+  
   public void deleteMember() {
     System.out.print("번호? ");
-    int no = input.nextInt();
+    int index = input.nextInt();
     input.nextLine(); // 숫자 뒤의 남은 공백 제거
-
-    int index = indexOfMember(no);
-
-    if (index == -1) {
-      System.out.println("해당 번호의 회원이 없습니다.");
+    
+    Member member = this.memberList.get(index);
+    
+    if (member == null) {
+      System.out.println("회원번호가 유효하지 않습니다.");
       return;
     }
+    
     this.memberList.remove(index);
-
-    System.out.println("회원을 삭제했습니다.");
+    
+    System.out.println("게시글을 삭제했습니다.");
   }
-
-  private int indexOfMember(int no) {
-    for (int i = 0; i < this.memberList.size(); i++) {
-      if (this.memberList.get(i).getNo() == no) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-
+  
+  
+  
+  
 }

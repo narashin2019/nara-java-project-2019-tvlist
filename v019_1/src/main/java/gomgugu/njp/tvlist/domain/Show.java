@@ -14,8 +14,6 @@ public class Show {
   private Date startDate;
   private Date endDate;
   private int watchedEpisode;
-  
-  
   public int getNo() {
     return no;
   }

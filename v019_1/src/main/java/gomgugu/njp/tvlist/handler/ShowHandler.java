@@ -79,18 +79,16 @@ public class ShowHandler {
 
 
   public void detailShow() {
-    System.out.print("번호? ");
-    int no = input.nextInt();
-    input.nextLine(); // 숫자 뒤의 남은 공백 제거
-    
-    int index = indexOfShow(no);
-    
-    if (index == -1) {
-      System.out.println("해당 번호의 드라마 정보가 없습니다.");
-      return;
-    }
+    System.out.println("번호? ");
+    int index = input.nextInt();
+    input.nextLine();
 
     Show show = this.showList.get(index);
+
+    if (show == null) {
+      System.out.println("해당 드라마를 찾을 수 없습니다.");
+      return;
+    }
 
     System.out.printf("제목한글: %s\n", show.getTitleKor());
     System.out.printf("제목영문: %s\n", show.getTitleEng());
@@ -102,18 +100,16 @@ public class ShowHandler {
 
 
   public void updateShow() {
-    System.out.print("번호? ");
-    int no = input.nextInt();
-    input.nextLine(); // 숫자 뒤의 남은 공백 제거
-    
-    int index = indexOfShow(no);
-    
-    if (index == -1) {
-      System.out.println("해당 번호의 드라마 정보가 없습니다.");
+    System.out.println("번호? ");
+    int index = input.nextInt();
+    input.nextLine();
+
+    Show oldShow = this.showList.get(index); 
+
+    if (oldShow == null) {
+      System.out.println("해당 드라마를 찾을 수 없습니다.");
       return;
     }
-    
-    Show oldShow = this.showList.get(index); 
 
     boolean changed = false;
     String inputStr = null;
@@ -198,14 +194,14 @@ public class ShowHandler {
 
   
   public void deleteShow() {
-    System.out.print("번호? ");
-    int no = input.nextInt();
+    System.out.print("드라마 인덱스? ");
+    int index = input.nextInt();
     input.nextLine(); // 숫자 뒤의 남은 공백 제거
     
-    int index = indexOfShow(no);
+    Show show = this.showList.get(index);
     
-    if (index == -1) {
-      System.out.println("해당 번호의 드라마 정보가 없습니다.");
+    if (show == null) {
+      System.out.println("드라마인덱스가 유효하지 않습니다.");
       return;
     }
     
@@ -214,14 +210,7 @@ public class ShowHandler {
     System.out.println("드라마를 삭제했습니다.");
   }
 
-  private int indexOfShow(int no) {
-    for (int i = 0; i < this.showList.size(); i++) {
-      if (this.showList.get(i).getNo() == no) {
-        return i;
-      }
-    }
-    return -1;
-  }
+  
   
   
   
