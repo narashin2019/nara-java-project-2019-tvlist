@@ -2,28 +2,28 @@
 // 게시글을 입력할 때 등록한 번호로 객체를 찾도록 변경한다. 
 // 게시글 번호로 객체를 찾는 코드를 관리하기 쉽게 별도의 메서드로 분리한다.
 // => indexOfBoard(int) 메서드 추가
-// Prompt로 변경
+//
 //
 package gomgugu.njp.tvlist.handler;
 
 import java.sql.Date;
+import java.util.Scanner;
 import gomgugu.njp.tvlist.domain.Board;
 import gomgugu.njp.util.ArrayList;
-import gomgugu.njp.util.Prompt;
 
 public class BoardHandler {
 
   ArrayList<Board> boardList;
   
-  Prompt prompt;
+  Scanner input;
 
-  public BoardHandler(Prompt prompt) {
-    this.prompt = prompt;
+  public BoardHandler(Scanner input) {
+    this.input = input;
     this.boardList = new ArrayList<>(); // <Board>에서 Board 생략가능 <>는 그대로
   }
 
-  public BoardHandler(Prompt prompt, int capacity) {
-    this.prompt = prompt;
+  public BoardHandler(Scanner input, int capacity) {
+    this.input = input;
     this.boardList = new ArrayList<>(capacity); // <Board>에서 Board 생략가능 <>는 그대로
   }
 
@@ -32,13 +32,19 @@ public class BoardHandler {
 
     Board board = new Board();
 
-    board.setNo(prompt.inputInt("번호? "));
+    System.out.print("번호? ");
+    board.setNo(input.nextInt());
+    input.nextLine(); 
 
-    board.setTitle(prompt.inputString("제목? "));
+    System.out.print("제목? ");
+    board.setTitle(input.nextLine());
     
-    board.setContents(prompt.inputString("내용? "));
+    System.out.print("내용? ");
+    board.setContents(input.nextLine());
     
-    board.setWriter(prompt.inputString("작성자? "));
+    System.out.print("작성자? ");
+    board.setWriter(input.nextLine());
+    
     
     board.setDate(new Date(System.currentTimeMillis()));
     board.setViewCount(0);
@@ -64,9 +70,12 @@ public class BoardHandler {
 
 
   public void detailBoard() {
+    System.out.println("번호? ");
+    int no = input.nextInt();
+    input.nextLine();
 
     // 게시글 번호로 객체를 찾는다.
-    int index = indexOfBoard(prompt.inputInt("번호? "));
+    int index = indexOfBoard(no);
 
     if (index == -1) {
       System.out.println("해당 번호의 게시글이 없습니다.");
@@ -82,46 +91,53 @@ public class BoardHandler {
    
   
   public void updateBoard() {
-    int index = indexOfBoard(prompt.inputInt("번호? "));
-
+    System.out.print("번호? ");
+    int no = input.nextInt();
+    input.nextLine(); // 숫자 뒤의 남은 공백 제거
+    
+    // 게시글 번호로 객체를 찾는다.
+    int index = indexOfBoard(no);
+    
     if (index == -1) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     }
     
     Board oldBoard = this.boardList.get(index);
-    Board newBoard = new Board();
     
-    newBoard.setNo(oldBoard.getNo());
-    newBoard.setViewCount(oldBoard.getViewCount());
-    newBoard.setDate(new Date(System.currentTimeMillis()));
+    System.out.printf("내용(%s)? ", oldBoard.getContents());
+    String contents = input.nextLine();
     
-    newBoard.setTitle(prompt.inputString(
-        String.format("제목(%s)? ", oldBoard.getTitle()), 
-        oldBoard.getTitle()));
-    
-    newBoard.setTitle(prompt.inputString(
-        String.format("내용(%s)? ", oldBoard.getContents()), 
-        oldBoard.getContents()));
- 
-    
-    if (newBoard.equals(oldBoard)) {
+    if (contents.length() == 0) {
       System.out.println("게시글 변경을 취소했습니다.");
       return;
     }
     
- 
+    Board newBoard = new Board();
+    newBoard.setNo(oldBoard.getNo());
+    newBoard.setViewCount(oldBoard.getViewCount());
+    newBoard.setTitle(oldBoard.getTitle());
+    newBoard.setTitle(contents);
+    newBoard.setDate(new Date(System.currentTimeMillis()));
+    
     this.boardList.set(index, newBoard);
+    
     System.out.println("게시글을 변경했습니다.");
   }
   
   public void deleteBoard() {
-    int index = indexOfBoard(prompt.inputInt("번호? "));
+    System.out.print("번호? ");
+    int no = input.nextInt();
+    input.nextLine(); // 숫자 뒤의 남은 공백 제거
+    
+    // 게시글 번호로 객체를 찾는다.
+    int index = indexOfBoard(no);
     
     if (index == -1) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     }
+    
     
     this.boardList.remove(index);
     
