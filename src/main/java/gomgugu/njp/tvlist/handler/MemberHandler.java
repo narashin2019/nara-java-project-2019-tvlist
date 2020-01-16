@@ -9,19 +9,19 @@ package gomgugu.njp.tvlist.handler;
 
 import java.sql.Date;
 import gomgugu.njp.tvlist.domain.Member;
-import gomgugu.njp.util.ArrayList;
+import gomgugu.njp.util.LinkedList;
 import gomgugu.njp.util.Prompt;
 
 public class MemberHandler {
 
-  ArrayList<Member> memberList;
+  LinkedList<Member> memberList;
 
   Prompt prompt;
 
 
   public MemberHandler(Prompt prompt) {
     this.prompt = prompt;
-    memberList = new ArrayList<>();
+    memberList = new LinkedList<>();
   }
 
 

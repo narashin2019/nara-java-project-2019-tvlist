@@ -7,18 +7,18 @@
 package gomgugu.njp.tvlist.handler;
 
 import gomgugu.njp.tvlist.domain.Show;
-import gomgugu.njp.util.ArrayList;
+import gomgugu.njp.util.LinkedList;
 import gomgugu.njp.util.Prompt;
 
 public class ShowHandler {
 
-  ArrayList<Show> showList;
+  LinkedList<Show> showList;
 
   Prompt prompt;
 
   public ShowHandler(Prompt prompt) {
     this.prompt = prompt;
-    this.showList = new ArrayList<>();
+    this.showList = new LinkedList<>();
   }
 
   public void addShow() {

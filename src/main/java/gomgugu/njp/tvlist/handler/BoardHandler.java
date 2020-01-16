@@ -8,23 +8,18 @@ package gomgugu.njp.tvlist.handler;
 
 import java.sql.Date;
 import gomgugu.njp.tvlist.domain.Board;
-import gomgugu.njp.util.ArrayList;
+import gomgugu.njp.util.LinkedList;
 import gomgugu.njp.util.Prompt;
 
 public class BoardHandler {
 
-  ArrayList<Board> boardList;
+  LinkedList<Board> boardList;
   
   Prompt prompt;
 
   public BoardHandler(Prompt prompt) {
     this.prompt = prompt;
-    this.boardList = new ArrayList<>(); // <Board>에서 Board 생략가능 <>는 그대로
-  }
-
-  public BoardHandler(Prompt prompt, int capacity) {
-    this.prompt = prompt;
-    this.boardList = new ArrayList<>(capacity); // <Board>에서 Board 생략가능 <>는 그대로
+    this.boardList = new LinkedList<>(); // <Board>에서 Board 생략가능 <>는 그대로
   }
 
   
