@@ -12,6 +12,7 @@ import java.util.Scanner;
 import gomgugu.njp.tvlist.handler.BoardHandler;
 import gomgugu.njp.tvlist.handler.MemberHandler;
 import gomgugu.njp.tvlist.handler.ShowHandler;
+import gomgugu.njp.util.Prompt;
 
 public class App {
 
@@ -20,9 +21,11 @@ public class App {
   public static void main(String[] args) {
 
 
-    BoardHandler boardHandler1 = new BoardHandler(keyboard);
-    ShowHandler showHandler = new ShowHandler(keyboard);
-    MemberHandler memberHandler = new MemberHandler(keyboard);
+    Prompt prompt = new Prompt(keyboard);
+    
+    BoardHandler boardHandler1 = new BoardHandler(prompt);
+    ShowHandler showHandler = new ShowHandler(prompt);
+    MemberHandler memberHandler = new MemberHandler(prompt);
 
     String command;
 
