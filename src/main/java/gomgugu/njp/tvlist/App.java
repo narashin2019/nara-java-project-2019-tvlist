@@ -13,17 +13,20 @@ import gomgugu.njp.tvlist.handler.BoardHandler;
 import gomgugu.njp.tvlist.handler.MemberHandler;
 import gomgugu.njp.tvlist.handler.ShowHandler;
 import gomgugu.njp.util.Prompt;
+import gomgugu.njp.util.Stack;
 
 public class App {
 
   static Scanner keyboard = new Scanner(System.in);
+  
+  static Stack<String> commandStack = new Stack<>();
 
   public static void main(String[] args) {
 
 
     Prompt prompt = new Prompt(keyboard);
     
-    BoardHandler boardHandler1 = new BoardHandler(prompt);
+    BoardHandler boardHandler = new BoardHandler(prompt);
     ShowHandler showHandler = new ShowHandler(prompt);
     MemberHandler memberHandler = new MemberHandler(prompt);
 
@@ -76,25 +79,27 @@ public class App {
           break;
 
         case "/board/add" :
-          boardHandler1.addBoard();
+          boardHandler.addBoard();
           break;
 
         case "/board/list" :
-          boardHandler1.listBoard();
+          boardHandler.listBoard();
           break;     
 
         case "/board/detail" :
-          boardHandler1.detailBoard();
+          boardHandler.detailBoard();
           break;   
 
         case "/board/update" :
-          boardHandler1.updateBoard();
+          boardHandler.updateBoard();
           break; 
 
         case "/board/delete" :
-          boardHandler1.deleteBoard();
+          boardHandler.deleteBoard();
           break; 
-
+        case "history":
+          printCommandHistory();
+          break;
         default : 
           if (!command.equalsIgnoreCase("quit")) {
             System.out.println("실행할 수 없는 명령입니다.");
@@ -106,5 +111,21 @@ public class App {
     keyboard.close();
 
   } //main
+  private static void printCommandHistory() {
+    Stack<String> historyStack = commandStack.clone();
+    int count = 0;
+    while (!historyStack.empty()) {
+      System.out.println(historyStack.pop());
+      count++;
+      
+      if ((count % 5) == 0) {
+        System.out.print(":");
+        String str = keyboard.nextLine();
+        if (str.equalsIgnoreCase("q")) {
+          break;
+        }
+      }
+    }
+  }
 }//public class App
 
