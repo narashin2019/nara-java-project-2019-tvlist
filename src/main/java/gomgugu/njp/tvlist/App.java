@@ -13,19 +13,21 @@ import gomgugu.njp.tvlist.handler.BoardHandler;
 import gomgugu.njp.tvlist.handler.MemberHandler;
 import gomgugu.njp.tvlist.handler.ShowHandler;
 import gomgugu.njp.util.Prompt;
+import gomgugu.njp.util.Queue;
 import gomgugu.njp.util.Stack;
 
 public class App {
 
   static Scanner keyboard = new Scanner(System.in);
-  
+
   static Stack<String> commandStack = new Stack<>();
+  static Queue<String> commandQueue = new Queue<>();
 
   public static void main(String[] args) {
 
 
     Prompt prompt = new Prompt(keyboard);
-    
+
     BoardHandler boardHandler = new BoardHandler(prompt);
     ShowHandler showHandler = new ShowHandler(prompt);
     MemberHandler memberHandler = new MemberHandler(prompt);
@@ -37,70 +39,73 @@ public class App {
       command = keyboard.nextLine();
 
       switch (command) {
-        case "/show/add" :
-          //인스턴스 메서드 호출 방법
+        case "/show/add":
+          // 인스턴스 메서드 호출 방법
           showHandler.addShow();
           break;
 
-        case "/show/list" :
+        case "/show/list":
           showHandler.listShow();
           break;
 
-        case "/show/detail" :
+        case "/show/detail":
           showHandler.detailShow();
           break;
 
-        case "/show/update" :
+        case "/show/update":
           showHandler.updateShow();
           break;
 
-        case "/show/delete" :
+        case "/show/delete":
           showHandler.deleteShow();
           break;
 
-        case "/member/add" :
+        case "/member/add":
           memberHandler.addMember();
           break;
 
-        case "/member/list" :
+        case "/member/list":
           memberHandler.listMember();
           break;
 
-        case "/member/detail" :
+        case "/member/detail":
           memberHandler.detailMember();
           break;
 
-        case "/member/update" :
+        case "/member/update":
           memberHandler.updateMember();
           break;
 
-        case "/member/delete" :
+        case "/member/delete":
           memberHandler.deleteMember();
           break;
 
-        case "/board/add" :
+        case "/board/add":
           boardHandler.addBoard();
           break;
 
-        case "/board/list" :
+        case "/board/list":
           boardHandler.listBoard();
-          break;     
+          break;
 
-        case "/board/detail" :
+        case "/board/detail":
           boardHandler.detailBoard();
-          break;   
+          break;
 
-        case "/board/update" :
+        case "/board/update":
           boardHandler.updateBoard();
-          break; 
+          break;
 
-        case "/board/delete" :
+        case "/board/delete":
           boardHandler.deleteBoard();
-          break; 
+          break;
         case "history":
           printCommandHistory();
           break;
-        default : 
+        case "history2":
+          printCommandHistory2();
+          break;
+        default:
           if (!command.equalsIgnoreCase("quit")) {
             System.out.println("실행할 수 없는 명령입니다.");
           }
@@ -110,14 +115,15 @@ public class App {
 
     keyboard.close();
 
-  } //main
+  } // main
+
   private static void printCommandHistory() {
     Stack<String> historyStack = commandStack.clone();
     int count = 0;
     while (!historyStack.empty()) {
       System.out.println(historyStack.pop());
       count++;
-      
+
       if ((count % 5) == 0) {
         System.out.print(":");
         String str = keyboard.nextLine();
@@ -127,5 +133,24 @@ public class App {
       }
     }
   }
-}//public class App
+
+  private static void printCommandHistory2() {
+    Queue<String> historyQueue = commandQueue.clone();
+    int count = 0;
+
+    while (historyQueue.size() > 0) {
+      System.out.println(historyQueue.poll());
+
+      if ((++count % 5) == 0) {
+        System.out.print(":");
+        String str = keyboard.nextLine();
+        if (str.equalsIgnoreCase("q")) {
+          break;
+        }
+      }
+    }
+
+  }
+
+}// public class App
 
