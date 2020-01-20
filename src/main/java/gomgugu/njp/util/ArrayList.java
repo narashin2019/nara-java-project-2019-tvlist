@@ -2,7 +2,7 @@ package gomgugu.njp.util;
 
 import java.util.Arrays;
 
-public class ArrayList<E> extends List<E> {
+public class ArrayList<E> extends AbstractList<E> {
 
   private static final int DEFAULT_CAPACITY = 2;
 

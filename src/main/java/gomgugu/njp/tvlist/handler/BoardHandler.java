@@ -8,7 +8,7 @@ package gomgugu.njp.tvlist.handler;
 
 import java.sql.Date;
 import gomgugu.njp.tvlist.domain.Board;
-import gomgugu.njp.util.List;
+import gomgugu.njp.util.AbstractList;
 import gomgugu.njp.util.Prompt;
 
 public class BoardHandler {
@@ -19,10 +19,10 @@ public class BoardHandler {
   // => 대신 이 필드에 들어갈 객체는 생성자에서 파라미터로 받는다.
   // => 이렇게 하면 ArrayList도 사용할 수 있고 LinkedList도 사용할 수 있어
   // 유지보수에 좋다. 즉 선택의 폭이 넓어진다.
-  List<Board> boardList;
+  AbstractList<Board> boardList;
   Prompt prompt;
 
-  public BoardHandler(Prompt prompt, List<Board> list) { 
+  public BoardHandler(Prompt prompt, AbstractList<Board> list) { 
     // 참조변수는 수퍼클래스List로 하면 서브클래스ArrayList, LinkedList 다 넘겨받을 수 있다.
     this.prompt = prompt;
     this.boardList = list;

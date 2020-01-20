@@ -7,7 +7,7 @@
 package gomgugu.njp.tvlist.handler;
 
 import gomgugu.njp.tvlist.domain.Show;
-import gomgugu.njp.util.List;
+import gomgugu.njp.util.AbstractList;
 import gomgugu.njp.util.Prompt;
 
 public class ShowHandler {
@@ -18,11 +18,11 @@ public class ShowHandler {
   // => 대신 이 필드에 들어갈 객체는 생성자에서 파라미터로 받는다.
   // => 이렇게 하면 ArrayList도 사용할 수 있고 LinkedList도 사용할 수 있어
   // 유지보수에 좋다. 즉 선택의 폭이 넓어진다.
-  List<Show> showList;
+  AbstractList<Show> showList;
 
   Prompt prompt;
 
-  public ShowHandler(Prompt prompt, List<Show> list) {
+  public ShowHandler(Prompt prompt, AbstractList<Show> list) {
     this.prompt = prompt;
     this.showList = list;
     // 이렇게 Handler가 사용할 List 객체(의존객체; dependency)를 생성자에서 직접 만들지 않고
