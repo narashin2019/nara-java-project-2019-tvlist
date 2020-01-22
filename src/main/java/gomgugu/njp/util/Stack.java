@@ -109,39 +109,64 @@ public class Stack<E> implements Cloneable {
 
   public Iterator<E> iterator() {
     // this = 인스턴스 주소 담는 변수
-    // inner class를 생성하려면 바깥 클래스의 인스턴스 주소를 앞쪽에 줘야 한다. 그래서 앞에 this붙인것
-    return this.new StackIterator<E>(this);
+
+    // local class : 특정 메서드 안에서만 사용되는 클래스 라면 그 메서드 안에 로컬 클래스로 정의하라.
+    class StackIterator<T>  implements Iterator<T> {
+
+      Stack<T> stack;
+
+      //생성자
+      @SuppressWarnings("unchecked")
+      public StackIterator(Stack<T> stack) {
+        this.stack = (Stack<T>) Stack.this.clone();
+      }
+
+
+      @Override
+      public boolean hasNext() {
+        return !stack.empty();
+      }
+
+      @Override
+      public T next() {
+        return stack.pop();
+      }
+    }
+    
+    //로컬 클래스의 인스턴스를 생성할 때 바깥 클래스의 인스턴스 주소를 줘서는 안된다.
+    // 즉 생성자를 호출하는 앞쪽에 this를 붙여서는 안된다.
+    return new StackIterator<E>(this);
   }
 
-
-  // non-static nested class = inner class
-  class StackIterator<T>  implements Iterator<T> {
-    //Stack 객체에서 Iterator 규칙에 따라 값을 꺼내주는 클래스를 정의
-
-    Stack<T> stack;
-
-    //생성자
-    @SuppressWarnings("unchecked")
-    public StackIterator(Stack<T> stack) {
-      this.stack = (Stack<T>) Stack.this.clone(); // 꺼내는 순간 제거되기 때문에ㅐ 복제를 해놓고 리턴
+/*
+  static void m1() {
+    // 스태틱 메서드는 다음과 클래스 이름으로 바로 호출할 수 있기 때문에 this 변수가 없다.
+    // 예 ) Stack.m1()처럼 클래스이름으로 호출 가능해서
+    
+    
+    //스태틱 메서드 에서 로컬 클래스를 정의한다면,
+    // 그 로컬 클래스는 바깥 클래스의 인스턴스를 직접 접근할 수 없다. 
+     * 왜? 스태틱메서드는 디스가 없기 때문에 
+    class A {
+      A() {
+        Stack s;
+        s = Stack.this; // 컴파일 오류
+        // 이 로컬 클래스는 m1()에서 사용할 것이다.
+        // m1()은 바깥 클래스의 인스턴스 주소를 모른다.
+        // 그런데 로컬 클래스에서 위와 같이 바깥 클래스의 인스턴스를 사용하려 한하면
+        // 문제가 될 것이다.
+        // 이런 상황을 방지하고자 자바는 컴파일 오류를 발생 시킨다.
+      }
     }
-
-
-    @Override
-    public boolean hasNext() {
-      return !stack.empty();
-
-    }
-
-    @Override
-    public T next() {
-      return stack.pop();
-
-    }
-
-
+    
   }
+*/
+   
+  
 
 
 }
+
+
+
 
