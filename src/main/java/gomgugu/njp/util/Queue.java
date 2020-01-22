@@ -10,16 +10,31 @@ public class Queue<E> extends LinkedList<E> implements Cloneable {
     return this.remove(0);
   }
 
-  /*
-   * @Override public Queue clone() { try { // 단순히 객체의 인스턴스 변수를 복제하는 'shallow copy' 수행 // => Object의
-   * clone()은 'shallow copy'를 수행한다. // => Queue에서 poll()을 수행하면 first 노드를 삭제하게 되고, // 이때 원본 객체의 노드의
-   * 링크 정보를 변경하게 된다. // => 따라서 다음에 다시 복제를 수행하면, // 원본 노드의 링크 정보가 제거되었기 때문에 제대로 작업을 수행할 수 없다. // //
-   * 해결책? // => 원본 객체가 사용하는 노드도 함께 복제해야 한다. // => 즉 'deep copy'를 수행해야 한다. // return (Queue)
-   * super.clone();
-   *
-   * } catch (CloneNotSupportedException ex) { System.out.println(ex); return null; } }
-   */
 
+  /*
+  @Override
+  public Queue clone() {
+    try {
+      // 단순히 객체의 인스턴스 변수를 복제하는 'shallow copy' 수행
+      // => Object의 clone()은 'shallow copy'를 수행한다.
+      // => Queue에서 poll()을 수행하면 first 노드를 삭제하게 되고,
+      //    이때 원본 객체의 노드의 링크 정보를 변경하게 된다.
+      // => 따라서 다음에 다시 복제를 수행하면,
+      //    원본 노드의 링크 정보가 제거되었기 때문에 제대로 작업을 수행할 수 없다.
+      //
+      // 해결책?
+      // => 원본 객체가 사용하는 노드도 함께 복제해야 한다.
+      // => 즉 'deep copy'를 수행해야 한다.
+      //
+      return (Queue) super.clone();
+      
+    } catch (CloneNotSupportedException ex) {
+      System.out.println(ex);
+      return null;
+    }
+  }
+  */
+  
   @Override
   public Queue<E> clone() {
     // 'deep copy' 수행
@@ -38,18 +53,26 @@ public class Queue<E> extends LinkedList<E> implements Cloneable {
     return temp;
   }
 
-  @Override
   public Iterator<E> iterator() {
-    return new QueueIterator<>(this);
+    // this = 리스트 인스턴스 주소 넘어온다.
+    // inner class의 생성자를 호출 할 때는 바ㅏㄲㅌ 클래스의 인스턴스 주소를 파라미터로 넘기지 말고.
+    // 앞에서 넘겨라
+    return this.new QueueIterator<>();
   }
+  
+  
+  // non-static nested class =inner class
+  class QueueIterator<T>  implements Iterator<T> {
+    //Queue객체에서 Iterator 규칙에 따라 값을 꺼내주는 클래스를 정의
 
-  static class QueueIterator<E> implements Iterator<E> {
+    Queue<T> queue;
 
-    Queue<E> queue;
-
-    public QueueIterator(Queue<E> queue) {
-      this.queue = queue.clone();
+    //생성자
+    @SuppressWarnings("unchecked")
+    public QueueIterator() {
+      this.queue = (Queue<T>) Queue.this.clone(); // 꺼내는 순간 제거되기 때문에ㅐ 복제를 해놓고 리턴
     }
+    
 
     @Override
     public boolean hasNext() {
@@ -57,11 +80,11 @@ public class Queue<E> extends LinkedList<E> implements Cloneable {
     }
 
     @Override
-    public E next() {
+    public T next() {
       return queue.poll();
     }
-  }
 
+  }
 }
 
 

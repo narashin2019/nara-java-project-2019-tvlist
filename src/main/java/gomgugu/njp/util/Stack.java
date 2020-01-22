@@ -46,18 +46,31 @@ public class Stack<E> implements Cloneable {
   // Object.clone()의 'shallow copy' 이용하여 스택 객체 복사하기
   // => 객체의 인스턴스 변수를 그대로 복제한다.
   // => 인스턴스 변수가 가리키는 객체는 복제하지 않는다.
-  //
+  // 
   // 문제점?
   // => 따라서 인스턴스 변수인 elementData가 가리키는 배열은 복제하지 않는다.
   // => 그래서 배열의 값을 배꾸면 원본 스택에도 영향을 끼친다.
   //
   /*
-   * @Override public Stack clone() { try { return (Stack)super.clone();
-   *
-   * } catch (CloneNotSupportedException ex) { // Object의 clone() 메서드는 // 복제가 허용된 객체에 대해서만 해당 인스턴스
-   * 변수를 복제한다. // 복제가 허용되지 않은 객체에 대해서 clone()을 호출하면 // CloneNotSupportedException 실행 오류가 발생한다. //
-   * 해결책? // => 해당 클래스의 객체를 복제할 수 있다고 표시하라. // => 방법: Cloneable 인터페이스를 지정한다. // 예) class My
-   * implements Cloneable {...} // System.out.println(ex); return null; } }
+  @Override
+  public Stack clone() {
+    try {
+      return (Stack)super.clone();
+
+    } catch (CloneNotSupportedException ex) {
+      // Object의 clone() 메서드는 
+      // 복제가 허용된 객체에 대해서만 해당 인스턴스 변수를 복제한다.
+      // 복제가 허용되지 않은 객체에 대해서 clone()을 호출하면 
+      // CloneNotSupportedException 실행 오류가 발생한다.
+      // 해결책?
+      // => 해당 클래스의 객체를 복제할 수 있다고 표시하라. 
+      // => 방법: Cloneable 인터페이스를 지정한다.
+      //    예) class My implements Cloneable {...}
+      //
+      System.out.println(ex);
+      return null;
+    }
+  }
    */
 
   // 'deep copy'를 이용하여 객체 복제하기
@@ -69,10 +82,10 @@ public class Stack<E> implements Cloneable {
   @Override
   public Stack<E> clone() {
     try {
-      // 1) 'shallow copy'를 통해 이 객체의 인스턴스 변수는 그대로 복제한다.
+      //1) 'shallow copy'를 통해 이 객체의 인스턴스 변수는 그대로 복제한다. 
       Stack<E> temp = (Stack<E>) super.clone();
 
-      // 2) elementData 배열을 복제한다.
+      //2) elementData 배열을 복제한다.
       // => 배열만 복제하고 그 배열에 저장된 객체(ex: 문자열, Member 등)까지는 복제하지 않는다.
       // => 어디까지 복제(deep copy의 수준)할 것인지는 상황에 따라 결정한다.
       //
@@ -81,7 +94,7 @@ public class Stack<E> implements Cloneable {
         arr[i] = this.elementData[i];
       }
 
-      // 3) 복제한 스택 객체가 새로 만든 배열을 가리키도록 한다.
+      //3) 복제한 스택 객체가 새로 만든 배열을 가리키도록 한다.  
       temp.elementData = arr;
 
       return temp;
@@ -92,29 +105,43 @@ public class Stack<E> implements Cloneable {
     }
   }
 
+
+
   public Iterator<E> iterator() {
-    return new StackIterator<E>(this);
+    // this = 인스턴스 주소 담는 변수
+    // inner class를 생성하려면 바깥 클래스의 인스턴스 주소를 앞쪽에 줘야 한다. 그래서 앞에 this붙인것
+    return this.new StackIterator<E>(this);
   }
 
-  static class StackIterator<E> implements Iterator<E> {
 
-    Stack<E> stack;
+  // non-static nested class = inner class
+  class StackIterator<T>  implements Iterator<T> {
+    //Stack 객체에서 Iterator 규칙에 따라 값을 꺼내주는 클래스를 정의
 
-    public StackIterator(Stack<E> stack) {
-      this.stack = stack.clone();
+    Stack<T> stack;
+
+    //생성자
+    @SuppressWarnings("unchecked")
+    public StackIterator(Stack<T> stack) {
+      this.stack = (Stack<T>) Stack.this.clone(); // 꺼내는 순간 제거되기 때문에ㅐ 복제를 해놓고 리턴
     }
+
 
     @Override
     public boolean hasNext() {
       return !stack.empty();
+
     }
 
     @Override
-    public E next() {
+    public T next() {
       return stack.pop();
+
     }
+
+
   }
 
-}
 
+}
 
