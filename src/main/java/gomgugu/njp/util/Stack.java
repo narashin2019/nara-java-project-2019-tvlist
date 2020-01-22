@@ -108,18 +108,16 @@ public class Stack<E> implements Cloneable {
 
 
   public Iterator<E> iterator() {
-    // this = 인스턴스 주소 담는 변수
 
-    // local class : 특정 메서드 안에서만 사용되는 클래스 라면 그 메서드 안에 로컬 클래스로 정의하라.
-    class StackIterator<T>  implements Iterator<T> {
+    //anonymous class : 인스턴스를 한 개만 생성한다면 로컬 클래스를 익명 클래스로 정의하라
+    return new Iterator<E>() {
 
-      Stack<T> stack;
+      Stack<E> stack = (Stack<E>) Stack.this.clone();;
 
-      //생성자
-      @SuppressWarnings("unchecked")
-      public StackIterator(Stack<T> stack) {
-        this.stack = (Stack<T>) Stack.this.clone();
-      }
+      //생성자 대신 인스턴스 블럭으로. 복잡할때 // 간단할때에 필드에 할당문으로 합쳐  
+      //{
+      //  this.stack = (Stack<E>) Stack.this.clone();
+      //}
 
 
       @Override
@@ -128,14 +126,10 @@ public class Stack<E> implements Cloneable {
       }
 
       @Override
-      public T next() {
+      public E next() {
         return stack.pop();
       }
-    }
-    
-    //로컬 클래스의 인스턴스를 생성할 때 바깥 클래스의 인스턴스 주소를 줘서는 안된다.
-    // 즉 생성자를 호출하는 앞쪽에 this를 붙여서는 안된다.
-    return new StackIterator<E>(this);
+    };
   }
 
 /*
@@ -145,7 +139,7 @@ public class Stack<E> implements Cloneable {
     
     
     //스태틱 메서드 에서 로컬 클래스를 정의한다면,
-    // 그 로컬 클래스는 바깥 클래스의 인스턴스를 직접 접근할 수 없다. 
+    // 그 로컬 클래스는 바깥 클래스릐 인스턴스를 직접 접근할 수 없다. 
      * 왜? 스태틱메서드는 디스가 없기 때문에 
     class A {
       A() {

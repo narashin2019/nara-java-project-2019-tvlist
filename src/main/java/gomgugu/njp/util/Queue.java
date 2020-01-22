@@ -53,51 +53,30 @@ public class Queue<E> extends LinkedList<E> implements Cloneable {
     return temp;
   }
 
-  public Iterator<E> iterator() {
-    // this = 리스트 인스턴스 주소 넘어온다.
-    // inner class의 생성자를 호출 할 때는 바ㅏㄲㅌ 클래스의 인스턴스 주소를 파라미터로 넘기지 말고.
-    // 앞에서 넘겨라
-    return this.new QueueIterator<>();
-  }
-  
-  
-  // non-static nested class =inner class
-  class QueueIterator<T>  implements Iterator<T> {
-    //Queue객체에서 Iterator 규칙에 따라 값을 꺼내주는 클래스를 정의
-
-    Queue<T> queue;
-
-    //생성자
-    @SuppressWarnings("unchecked")
-    public QueueIterator() {
-      this.queue = (Queue<T>) Queue.this.clone(); // 꺼내는 순간 제거되기 때문에ㅐ 복제를 해놓고 리턴
-    }
+ public Iterator<E> iterator() {
     
+    // anonymous class: 인스턴스를 한 개만 생성할 경우 로컬 클래스를 익명 클래스로 정의하라
+    
+    return new Iterator<E>() {
 
-    @Override
-    public boolean hasNext() {
-      return queue.size() > 0;
-    }
+      //생성자를 인스턴스 블록대신 변수 초기화 variable initializer 문법으로 필드 값을 설정한다.
+      Queue<E> queue = (Queue<E>) Queue.this.clone(); ;
 
-    @Override
-    public T next() {
-      return queue.poll();
-    }
+      @Override
+      public boolean hasNext() {
+        return queue.size() > 0;
+      }
 
+      @Override
+      public E next() {
+        return queue.poll();
+      }
+
+
+    };
   }
+  
 }
 
 
-/*
-## 클래스 멤버:
-  
-  class 클래스 {
-    필드 선언(스태틱, 인스턴스)
-    초기화블록(스태틱, 인스턴스)
-    생성자
-    메서드(스태틱, 인스턴스)
-    중첩클래스(스태틱, 인스턴스)
-  }
-
- */
 
