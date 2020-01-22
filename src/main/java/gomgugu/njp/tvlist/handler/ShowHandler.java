@@ -1,40 +1,22 @@
-// 게시글 인덱스로 객체를 찾는 대신에
-// 게시글을 입력할 때 등록한 번호로 객체를 찾도록 변경한다.
-// 게시글 번호로 객체를 찾는 코드를 관리하기 쉽게 별도의 메서드로 분리한다.
-// => indexOfBoard(int) 메서드 추가
-//
-//
 package gomgugu.njp.tvlist.handler;
 
 import gomgugu.njp.tvlist.domain.Show;
 import gomgugu.njp.util.AbstractList;
+import gomgugu.njp.util.Iterator;
+import gomgugu.njp.util.List;
 import gomgugu.njp.util.Prompt;
 
 public class ShowHandler {
 
-  // ArrayList나 LinkedList를 마음대로 사용할 수 있도록
-  // 객체 목록을 관리하는 필드를 선언할 때
-  // 이들 클래스의 수퍼 클래스로 선언한다.
-  // => 대신 이 필드에 들어갈 객체는 생성자에서 파라미터로 받는다.
-  // => 이렇게 하면 ArrayList도 사용할 수 있고 LinkedList도 사용할 수 있어
-  // 유지보수에 좋다. 즉 선택의 폭이 넓어진다.
-  AbstractList<Show> showList;
+  List<Show> showList;
 
   Prompt prompt;
 
   public ShowHandler(Prompt prompt, AbstractList<Show> list) {
     this.prompt = prompt;
     this.showList = list;
-    // 이렇게 Handler가 사용할 List 객체(의존객체; dependency)를 생성자에서 직접 만들지 않고
-    // 이렇게 생성자가 호출될 때 파라미터로 받으면,
-    // 필요에 따라 List 객체를 다른 객체로 대체하기가 쉽다.
-    // 예를 들어 ArrayList를 사용하다가 LinkedList로 바꾸기 쉽다.
-    // LinkedList를 사용하다가 다른 객체로 바꾸기가 쉽다.
-    // 즉 다형적변수에 법칙에 따라 List의 하위객체라면 어떤 객체든지 가능하다.
-    // 이런식으로 의존 객체를 외부에서 주입받는 것을
-    // "Dependency Injection(DI; 의존성주입)"이라 부른다.
-    // => 즉 의존 객체를 부품화하여 교체하기 쉽도록 만드는 방식이다.
   }
+
 
   public void addShow() {
     Show show = new Show();
@@ -58,11 +40,13 @@ public class ShowHandler {
 
 
   public void listShow() {
-    // 수업 객체 목록을 복사 받을 배열을 준비하고, toArray()를 실행한다.
-    // toArray()의 리턴 값은 파라미터로 넘겨준 배열의 주소이다. (기존배열그대로씀)
-    Show[] arr = this.showList.toArray(new Show[this.showList.size()]);
 
-    for (Show s : arr) {
+    // 컬렉션에서 값을 꺼내는 일을 해 줄 Iterator 준비하기
+    Iterator<Show> iterator = showList.iterator();
+
+    // Iterator 객체를 통해 ShowList에 보관되어 있는 값을 꺼낸다.
+    while (iterator.hasNext()) {
+      Show s = iterator.next();
       System.out.printf("%d, %-20s, %s ~ %s, %d\n", s.getNo(), s.getTitleKor(), s.getStartDate(),
           s.getEndDate(), s.getWatchedEpisode());
     }
