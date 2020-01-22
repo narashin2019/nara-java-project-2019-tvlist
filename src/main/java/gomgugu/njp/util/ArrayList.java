@@ -6,7 +6,6 @@ public class ArrayList<E> extends AbstractList<E> {
 
   private static final int DEFAULT_CAPACITY = 2;
 
-  // 뉴 했을떄 만들어지는 메모리의 설계도 = 인스턴스 필드. 초기화 필요없다.
   Object[] elementData;
 
   // 생성자
@@ -25,34 +24,31 @@ public class ArrayList<E> extends AbstractList<E> {
 
 
 
-  // 목록의 특정 위치에 저장된 항목을 꺼내주는 get()
-  @Override
+  // 추상 메서드를 구현할 때,
+  // 다음과 같이 @Override 애노테이션을 붙이지 않아도 문법 검사가 이루어지기 때문에 편하다.
+  // @Override
   @SuppressWarnings("unchecked")
+  @Override
   public E get(int index) {
     if (index < 0 || index >= this.size) {
       return null;
     }
     return (E) this.elementData[index];
-    // 타입캐스팅(E) 실행할 때 저장되는 값의 리턴타입이 결정된다.
-    // 스트링이면 스트링인지 아닌지 컴파일러가 다 검사함.
   }
 
 
-  // 목록의 특정 위치에 저장된 항목을 바꾸는 set() // 리턴값은 예전 항목이다. // 원치않으면 리턴 안받으면 된다.
   @Override
   @SuppressWarnings("unchecked")
   public E set(int index, E e) {
     if (index < 0 || index >= this.size) {
       return null;
     }
-    // 바꾸기전 항목을 따로 보관해 둔다. 필요할 수 있다.
     E oldValue = (E) this.elementData[index];
     this.elementData[index] = e;
     return oldValue;
   }
 
 
-  // 목록의 특정 위치에 저장된 항목을 삭제하는 remove() // 리턴값은 예전 항목이다. // 원치않으면 리턴 안받으면 된다.
   @Override
   @SuppressWarnings("unchecked")
   public E remove(int index) {
@@ -60,13 +56,10 @@ public class ArrayList<E> extends AbstractList<E> {
       return null;
     }
 
-    // 삭제할 항목을 따로 보관해 둔다. 필요할 수 있다.
     E oldValue = (E) this.elementData[index];
-
     System.arraycopy(this.elementData, index + 1, this.elementData, index, this.size - (index + 1));
     /*
-     * for (int i = index + 1; i < this.size; i++) { 
-     *   this.elementData[i - 1] = this.elementData[i];
+     * for (int i = index + 1; i < this.size; i++) { this.elementData[i - 1] = this.elementData[i];
      * }
      */
     this.size--;
@@ -74,20 +67,13 @@ public class ArrayList<E> extends AbstractList<E> {
   }
 
 
-  @Override
-  public int size() {
-    return this.size; // this는 생략가능. this변수에 들어있는 size
-  }
-
 
   @Override
   public Object[] toArray() {
     return Arrays.copyOf(this.elementData, this.size);
     /*
-     * Object[] arr = new Object[this.size]; 
-     * for (int i = 0; i < this.size; i++) { 
-     * arr[i] = this.elementData[i]; } 
-     * return arr;
+     * Object[] arr = new Object[this.size]; for (int i = 0; i < this.size; i++) { arr[i] =
+     * this.elementData[i]; } return arr;
      */
   }
 
@@ -95,16 +81,11 @@ public class ArrayList<E> extends AbstractList<E> {
   @Override
   @SuppressWarnings("unchecked")
   public E[] toArray(E[] arr) {
-    // 제네릭은 E[] arr = new E[100]; 이거 안됨 배열을 뉴로 못만듬
 
     if (arr.length < this.size) {
-      // 파라미터로 받은 배열이 작을 때는 현재 사이즈 크기의 새 배열을 만들어 리턴
-      return (E[]) Arrays.copyOf(this.elementData, this.size, arr.getClass()); // arr.getClass()
-                                                                               // 클래스타입이 무엇인지 정보 가져옴
+      return (E[]) Arrays.copyOf(this.elementData, this.size, arr.getClass());
     }
-    // 파라미터로 받은 배열 넉넉할 때는 파라미터로 받은 배열을 그대로 리턴.
     System.arraycopy(this.elementData, 0, arr, 0, this.size);
-    // this.elementData를 0번방부터 arr에 0번방부터 this.size만큼 복사한다
     return arr;
   }
 
@@ -139,7 +120,7 @@ public class ArrayList<E> extends AbstractList<E> {
     return this.elementData = Arrays.copyOf(this.elementData, newCapacity());
   }
 
-  private int newCapacity() { 
+  private int newCapacity() {
     int oldSize = this.elementData.length;
     return oldSize + (oldSize >> 1);
   }

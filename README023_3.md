@@ -10,6 +10,7 @@
 
 - /util/List.java 추가
 - /util/AbstractList.java 변경
+- /App.java 변경
 
 ## 실습
 

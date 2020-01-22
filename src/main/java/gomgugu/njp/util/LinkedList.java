@@ -120,7 +120,7 @@ public class LinkedList<E> extends AbstractList<E> {
 
   @Override
   @SuppressWarnings("unchecked")
-  public E[] toArray(E[] arr) { //바깥에서 배열이 들어옴 파라미터로 받은 배열
+  public E[] toArray(E[] arr) { // 바깥에서 배열이 들어옴 파라미터로 받은 배열
 
     if (arr.length < size) {
       arr = (E[]) Array.newInstance(arr.getClass().getComponentType(), size);
@@ -134,22 +134,18 @@ public class LinkedList<E> extends AbstractList<E> {
 
     return arr;
   }
-  
 
-  //  자바.랭.리플렉트.어레이.뉴인스턴스 메서드 있음.
-  //  componentType: 배열을 구성하는 하나의 항목의 타입이 뭐냐는 질문 > E(E는 클래스를 가리키는 레퍼런스 격이라 E.class안됨)
-  //  length 몇개 만들꺼냐 
-  //  arr.getClass().getComponenetType(), size
-  //  arr의 배열자체타입 그 배열의 한 항목의 타입이 뭔지 찾는 코드
-  //  마지막으로 (E[]) 까지!
-  
 
-  @Override
-  public int size() {
-    return this.size;
-  }
+  // 자바.랭.리플렉트.어레이.뉴인스턴스 메서드 있음.
+  // componentType: 배열을 구성하는 하나의 항목의 타입이 뭐냐는 질문 > E(E는 클래스를 가리키는 레퍼런스 격이라 E.class안됨)
+  // length 몇개 만들꺼냐
+  // arr.getClass().getComponenetType(), size
+  // arr의 배열자체타입 그 배열의 한 항목의 타입이 뭔지 찾는 코드
+  // 마지막으로 (E[]) 까지!
 
-  static class Node<T> { //t에 e가 넘어오는 것 /스태틱 네스티드 클래스는 그대로 둠 
+
+
+  static class Node<T> { // t에 e가 넘어오는 것 /스태틱 네스티드 클래스는 그대로 둠
     T value;
     Node<T> next; // 노드 클래스에 저장하는 값 타입을 T타입이라고 하자. E하고 충돌안일어나게
   }
