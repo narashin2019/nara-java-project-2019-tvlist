@@ -16,7 +16,7 @@ public class Queue<E> extends LinkedList<E> implements Cloneable {
    * 링크 정보를 변경하게 된다. // => 따라서 다음에 다시 복제를 수행하면, // 원본 노드의 링크 정보가 제거되었기 때문에 제대로 작업을 수행할 수 없다. // //
    * 해결책? // => 원본 객체가 사용하는 노드도 함께 복제해야 한다. // => 즉 'deep copy'를 수행해야 한다. // return (Queue)
    * super.clone();
-   * 
+   *
    * } catch (CloneNotSupportedException ex) { System.out.println(ex); return null; } }
    */
 
@@ -43,6 +43,38 @@ public class Queue<E> extends LinkedList<E> implements Cloneable {
     return new QueueIterator<>(this);
   }
 
+  static class QueueIterator<E> implements Iterator<E> {
+
+    Queue<E> queue;
+
+    public QueueIterator(Queue<E> queue) {
+      this.queue = queue.clone();
+    }
+
+    @Override
+    public boolean hasNext() {
+      return queue.size() > 0;
+    }
+
+    @Override
+    public E next() {
+      return queue.poll();
+    }
+  }
+
 }
 
+
+/*
+## 클래스 멤버:
+  
+  class 클래스 {
+    필드 선언(스태틱, 인스턴스)
+    초기화블록(스태틱, 인스턴스)
+    생성자
+    메서드(스태틱, 인스턴스)
+    중첩클래스(스태틱, 인스턴스)
+  }
+
+ */
 

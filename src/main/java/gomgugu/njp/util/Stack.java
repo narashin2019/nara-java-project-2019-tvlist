@@ -53,7 +53,7 @@ public class Stack<E> implements Cloneable {
   //
   /*
    * @Override public Stack clone() { try { return (Stack)super.clone();
-   * 
+   *
    * } catch (CloneNotSupportedException ex) { // Object의 clone() 메서드는 // 복제가 허용된 객체에 대해서만 해당 인스턴스
    * 변수를 복제한다. // 복제가 허용되지 않은 객체에 대해서 clone()을 호출하면 // CloneNotSupportedException 실행 오류가 발생한다. //
    * 해결책? // => 해당 클래스의 객체를 복제할 수 있다고 표시하라. // => 방법: Cloneable 인터페이스를 지정한다. // 예) class My
@@ -94,6 +94,25 @@ public class Stack<E> implements Cloneable {
 
   public Iterator<E> iterator() {
     return new StackIterator<E>(this);
+  }
+
+  static class StackIterator<E> implements Iterator<E> {
+
+    Stack<E> stack;
+
+    public StackIterator(Stack<E> stack) {
+      this.stack = stack.clone();
+    }
+
+    @Override
+    public boolean hasNext() {
+      return !stack.empty();
+    }
+
+    @Override
+    public E next() {
+      return stack.pop();
+    }
   }
 
 }
