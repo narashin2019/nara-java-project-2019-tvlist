@@ -1,5 +1,11 @@
 package gomgugu.njp.tvlist;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 import gomgugu.njp.tvlist.domain.Board;
 import gomgugu.njp.tvlist.domain.Member;
@@ -7,19 +13,22 @@ import gomgugu.njp.tvlist.domain.Show;
 import gomgugu.njp.tvlist.handler.BoardHandler;
 import gomgugu.njp.tvlist.handler.MemberHandler;
 import gomgugu.njp.tvlist.handler.ShowHandler;
-import gomgugu.njp.util.ArrayList;
-import gomgugu.njp.util.Iterator;
-import gomgugu.njp.util.LinkedList;
 import gomgugu.njp.util.Prompt;
-import gomgugu.njp.util.Queue;
-import gomgugu.njp.util.Stack;
 
 public class App {
 
   static Scanner keyboard = new Scanner(System.in);
 
-  static Stack<String> commandStack = new Stack<>();
-  static Queue<String> commandQueue = new Queue<>();
+  // java.util.Stack에서 제공하는 Iterator 객체는 FIFO 방식으로 값을 꺼내준다.(오버라이딩안됨)
+  // 그래서 LIFO 방식으로 꺼내는 Iterator가 필요하다면
+  // java.util.Deque 구현체를 사용하라.
+  static Deque<String> commandStack = new ArrayDeque<>();
+  static Queue<String> commandQueue = new LinkedList<>();
+  // 큐는 인터페이스 / 링크드리스트는 클래스
+  // 가능하면 레퍼런스를 인터페이스로 하면 뒤에 것을 쉽게 교체할 수 있는 범위가 넓어짐.
+  // 그 인터페이스 규칙을 따른 클래스를 여러개 교체할 수 있당.
+
+
 
   public static void main(String[] args) {
 

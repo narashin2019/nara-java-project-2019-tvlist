@@ -1,10 +1,9 @@
 package gomgugu.njp.tvlist.handler;
 
 import java.sql.Date;
+import java.util.Iterator;
+import java.util.List;
 import gomgugu.njp.tvlist.domain.Board;
-import gomgugu.njp.util.AbstractList;
-import gomgugu.njp.util.Iterator;
-import gomgugu.njp.util.List;
 import gomgugu.njp.util.Prompt;
 
 public class BoardHandler {
@@ -14,7 +13,7 @@ public class BoardHandler {
 
   Prompt prompt;
 
-  public BoardHandler(Prompt prompt, AbstractList<Board> list) {
+  public BoardHandler(Prompt prompt, List<Board> list) {
     this.prompt = prompt;
     this.boardList = list;
   }

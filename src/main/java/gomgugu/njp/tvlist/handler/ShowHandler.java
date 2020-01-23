@@ -1,9 +1,8 @@
 package gomgugu.njp.tvlist.handler;
 
+import java.util.Iterator;
+import java.util.List;
 import gomgugu.njp.tvlist.domain.Show;
-import gomgugu.njp.util.AbstractList;
-import gomgugu.njp.util.Iterator;
-import gomgugu.njp.util.List;
 import gomgugu.njp.util.Prompt;
 
 public class ShowHandler {
@@ -12,7 +11,7 @@ public class ShowHandler {
 
   Prompt prompt;
 
-  public ShowHandler(Prompt prompt, AbstractList<Show> list) {
+  public ShowHandler(Prompt prompt, List<Show> list) {
     this.prompt = prompt;
     this.showList = list;
   }
