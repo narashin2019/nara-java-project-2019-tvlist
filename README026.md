@@ -54,12 +54,12 @@
 ### 훈련2. 명령을 처리하는 각 메서드를 객체로 분리하라.
 
 - ShowHandler.java
-    - 수업 CRUD 각 기능을 `Command` 규칙에 따라 객체로 분리한다.
+    -  CRUD 각 기능을 `Command` 규칙에 따라 객체로 분리한다.
 - MemberHandler.java
-    - 수업 CRUD 각 기능을 `Command` 규칙에 따라 객체로 분리한다.
+    -  CRUD 각 기능을 `Command` 규칙에 따라 객체로 분리한다.
 - BoardHandler.java
-    - 수업 CRUD 각 기능을 `Command` 규칙에 따라 객체로 분리한다.
-- App.java (App.java.01)
+    -  CRUD 각 기능을 `Command` 규칙에 따라 객체로 분리한다.
+- App.java
     - 명령어가 입력되면 `Command` 규칙에 따라 객체를 실행한다.
     - `/board2/xxx` 명령 처리는 삭제한다.
 
@@ -75,18 +75,6 @@
 명령> /hello
 이름? 홍길동
 홍길동님 반갑습니다.
-
-명령>
-```
-
-
-### 훈련 5: '/compute/plus' 명령을 추가하라.
-
-```
-명령> /compute/plus
-수1? 100
-수2? 200
-계산결과는 300 입니다.
 
 명령>
 ```
