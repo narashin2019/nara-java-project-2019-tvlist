@@ -59,7 +59,7 @@
     -  CRUD 각 기능을 `Command` 규칙에 따라 객체로 분리한다.
 - BoardHandler.java
     -  CRUD 각 기능을 `Command` 규칙에 따라 객체로 분리한다.
-- App.java
+- App.java 
     - 명령어가 입력되면 `Command` 규칙에 따라 객체를 실행한다.
     - `/board2/xxx` 명령 처리는 삭제한다.
 
