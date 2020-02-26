@@ -36,17 +36,11 @@ public class ShowUpdateCommand implements Command {
     newShow.setTitleEng(prompt.inputString(String.format("제목영문(%s)? ", oldShow.getTitleEng()),
         oldShow.getTitleEng()));
 
-    newShow.setStartDate(prompt.inputDate(String.format("시작일(%s)? ", oldShow.getStartDate()),
-        oldShow.getStartDate()));
-
-    newShow.setEndDate(
-        prompt.inputDate(String.format("종료일(%s)? ", oldShow.getEndDate()), oldShow.getEndDate()));
-
     newShow.setPoint(
         prompt.inputInt(String.format("별점(%d)? ", oldShow.getPoint()), oldShow.getPoint()));
 
-    newShow.setKeywords(prompt.inputString(String.format("키워드(%s)? ", oldShow.getKeywords()),
-        oldShow.getKeywords()));
+    newShow.setComments(prompt.inputString(String.format("코멘트(%s)? ", oldShow.getComments()),
+        oldShow.getComments()));
 
     newShow.setWatchedEpisode(prompt.inputInt(
         String.format("어디까지봤니(%d)? ", oldShow.getWatchedEpisode()), oldShow.getWatchedEpisode()));

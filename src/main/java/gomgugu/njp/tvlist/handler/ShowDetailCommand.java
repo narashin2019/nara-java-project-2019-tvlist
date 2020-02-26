@@ -28,9 +28,8 @@ public class ShowDetailCommand implements Command {
 
     System.out.printf("제목한글: %s\n", show.getTitleKor());
     System.out.printf("제목영문: %s\n", show.getTitleEng());
-    System.out.printf("기간: %s ~ %s\n", show.getStartDate(), show.getEndDate());
     System.out.printf("별점: %d\n", show.getPoint());
-    System.out.printf("키워드: %s\n", show.getKeywords());
+    System.out.printf("코멘트: %s\n", show.getComments());
     System.out.printf("어디까지봤니: %d\n", show.getWatchedEpisode());
   }
 

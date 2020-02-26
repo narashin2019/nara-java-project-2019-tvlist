@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,7 +41,7 @@ public class App {
   static Deque<String> commandStack = new ArrayDeque<>();
   static Queue<String> commandQueue = new LinkedList<>();
 
-  static ArrayList<Show> showList = new ArrayList<>();
+  static LinkedList<Show> showList = new LinkedList<>();
   static LinkedList<Board> boardList = new LinkedList<>();
   static LinkedList<Member> memberList = new LinkedList<>();
 
@@ -155,25 +154,13 @@ public class App {
 
 
   private static void loadShowData() {
-    // 수업데이타로딩하는 메서드.
-    // 변수는 읽지말고 중요한 것 먼저 읽어라.
-
-    // 데이터가 보관된 파일을 정보를 준비한다. = 어떤 파일을 읽을지 파일정보를 준비한다.
-    File file = new File("./lesson.csv"); // 현재폴더: 비트캠프-프로젝트
+    File file = new File("./show.csv"); // 현재폴더: 비트캠프-프로젝트
 
     FileReader in = null;
     Scanner dataScan = null;
 
     try {
-      // 저장된 파일에서 데이터를 읽어 줄 도구를 준비한다.
-      in = new FileReader(file); // 파일리더가 도구(빨대)에 file(음료수)에 꼽는다.
-
-      // .csv 파일에 한 줄 단위로 문자열을 읽는 기능이 필요하다.
-      // FileReader에는 그런 기능이 없다.
-      // 그래서 FileReader를 그대로 사용할 수 없고,
-      // 이 객체에 다른 도구를 연결하여 사용할 것이다.
-      //
-      // FileReader로 읽기에는 기능이 부족해서 한 줄 단위로 잘라주는 Scanner를 FileReader 도구에 붙인다.
+      in = new FileReader(file);
       dataScan = new Scanner(in);
 
       int count = 0;
@@ -189,17 +176,15 @@ public class App {
           String[] data = line.split(",");
 
           Show show = new Show();
+
           show.setNo(Integer.parseInt(data[0]));
           show.setCountry(data[1]);
-          show.setGenres(data[2]);
+          show.setGenre(data[2]);
           show.setTitleKor(data[3]);
           show.setTitleEng(data[4]);
           show.setPoint(Integer.parseInt(data[5]));
           show.setComments(data[6]);
-          show.setKeywords(data[7]);
-          show.setStartDate(Date.valueOf(data[8]));
-          show.setEndDate(Date.valueOf(data[9]));
-          show.setWatchedEpisode(Integer.parseInt(data[10]));
+          show.setWatchedEpisode(Integer.parseInt(data[7]));
 
           showList.add(show);
           count++;
@@ -253,10 +238,9 @@ public class App {
 
           board.setNo(Integer.parseInt(data[0]));
           board.setTitle(data[1]);
-          board.setContents(data[2]);
-          board.setDate(Date.valueOf(data[3]));
-          board.setViewCount(Integer.parseInt(data[4]));
-          board.setWriter(data[5]);
+          board.setDate(Date.valueOf(data[2])); //
+          board.setViewCount(Integer.parseInt(data[3]));
+          board.setWriter(data[4]);
 
           boardList.add(board);
           count++;
@@ -359,7 +343,7 @@ public class App {
   private static void saveShowData() {
 
     // 데이터가 보관된 파일 정보를 준비한다.
-    File file = new File("./lesson.csv");
+    File file = new File("./show.csv");
 
     FileWriter out = null;
 
@@ -369,9 +353,9 @@ public class App {
       int count = 0;
 
       for (Show show : showList) {
-        // 수업 목록에서 수업 객체 1개를 (데이터를) 꺼내 CSV 형식의 문자열로 만든다.
-        String line = String.format("%d,%s,%s,%s,%s,%d\n", show.getNo(), show.getTitleKor(),
-            show.getTitleEng(), show.getStartDate(), show.getEndDate(), show.getPoint());
+        String line = String.format("%d,%s,%s,%s,%s,%d,%s,%d\n", show.getNo(), show.getCountry(),
+            show.getGenre(), show.getTitleKor(), show.getTitleEng(), show.getPoint(),
+            show.getComments(), show.getWatchedEpisode());
 
 
         out.write(line);

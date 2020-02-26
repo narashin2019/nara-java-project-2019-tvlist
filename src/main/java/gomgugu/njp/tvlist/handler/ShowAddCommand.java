@@ -21,14 +21,11 @@ public class ShowAddCommand implements Command {
 
     show.setNo(prompt.inputInt("번호? "));
     show.setCountry(prompt.inputString("국가? "));
-    show.setGenres(prompt.inputString("장르? "));
+    show.setGenre(prompt.inputString("장르? "));
     show.setTitleKor(prompt.inputString("제목한글? "));
     show.setTitleEng(prompt.inputString("제목영문? "));
     show.setPoint(prompt.inputInt("별점? "));
     show.setComments(prompt.inputString("코멘트? "));
-    show.setKeywords(prompt.inputString("키워드? "));
-    show.setStartDate(prompt.inputDate("시작일? "));
-    show.setEndDate(prompt.inputDate("종료일? "));
     show.setWatchedEpisode(prompt.inputInt("어디까지봤니? "));
 
     showList.add(show);

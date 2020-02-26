@@ -19,8 +19,8 @@ public class ShowListCommand implements Command {
 
     while (iterator.hasNext()) {
       Show s = iterator.next();
-      System.out.printf("%d, %-20s, %s ~ %s, %d\n", s.getNo(), s.getTitleKor(), s.getStartDate(),
-          s.getEndDate(), s.getWatchedEpisode());
+      System.out.printf("%d, %-20s, %d, %d\n", s.getNo(), s.getTitleKor(), s.getPoint(),
+          s.getWatchedEpisode());
     }
   }
 
