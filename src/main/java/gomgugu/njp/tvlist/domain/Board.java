@@ -10,9 +10,27 @@ public class Board {
   private int viewCount;
   private String writer;
 
+  // CSV 포맷:
+  // - 번호,제목,등록일,조회수,작성자
+  //
+  public static Board valueOf(String csv) { // csv파일에서 값을 꺼내서 board 식판에 넣는 메서드
+    String[] data = csv.split(",");
 
-  // 이퀄스 비교할 때 date뺴고 만들어. 날짜가 달라도 제목이 같으면 같은 게시물로 취급
+    Board board = new Board();
+    board.setNo(Integer.parseInt(data[0]));
+    board.setTitle(data[1]);
+    board.setDate(Date.valueOf(data[2]));
+    board.setViewCount(Integer.parseInt(data[3]));
+    board.setWriter(data[4]);
+    return board;
+  }
 
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%d,%s", this.getNo(), this.getTitle(), this.getDate(),
+        this.getViewCount(), this.getWriter()); // csv문장을 만들어주는 포맷
+    // this가 가르키는 객체에서 값을 꺼내서 csv문자열을 만들어 리턴
+    // 이 메서드는 특정 인스턴스 값을 사용하기 때문에 스태틱이 아닌 인스턴스 메서드
+  }
 
   @Override
   public int hashCode() {
@@ -51,7 +69,6 @@ public class Board {
     return true;
   }
 
-  // 게터/세터를 이용해 저장 출력 되도록 함. 게터/세터는 public
   public int getNo() {
     return no;
   }
@@ -92,7 +109,4 @@ public class Board {
     this.writer = writer;
   }
 
-
 }
-
-

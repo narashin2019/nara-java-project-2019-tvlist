@@ -10,6 +10,34 @@ public class Show {
   private String comments;
   private int watchedEpisode;
 
+
+
+  public static Show valueOf(String csv) {
+    String[] data = csv.split(",");
+
+    Show show = new Show();
+
+    show.setNo(Integer.parseInt(data[0]));
+    show.setCountry(data[1]);
+    show.setGenre(data[2]);
+    show.setTitleKor(data[3]);
+    show.setTitleEng(data[4]);
+    show.setPoint(Integer.parseInt(data[5]));
+    show.setComments(data[6]);
+    show.setWatchedEpisode(Integer.parseInt(data[7]));
+
+    return show;
+  }
+
+
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%s,%s,%d,%s,%d\n", this.getNo(), this.getCountry(),
+        this.getGenre(), this.getTitleKor(), this.getTitleEng(), this.getPoint(),
+        this.getComments(), this.getWatchedEpisode());
+  }
+
+
+
   @Override
   public int hashCode() {
     final int prime = 31;

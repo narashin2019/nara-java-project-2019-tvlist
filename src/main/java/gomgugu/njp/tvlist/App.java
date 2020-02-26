@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,24 +38,21 @@ import gomgugu.njp.util.Prompt;
 public class App {
 
   static Scanner keyboard = new Scanner(System.in);
+
   static Deque<String> commandStack = new ArrayDeque<>();
   static Queue<String> commandQueue = new LinkedList<>();
 
-  static LinkedList<Show> showList = new LinkedList<>();
+  static ArrayList<Show> showList = new ArrayList<>();
   static LinkedList<Board> boardList = new LinkedList<>();
   static LinkedList<Member> memberList = new LinkedList<>();
 
   public static void main(String[] args) {
 
-    // 프로그램이 실생되면 파일에서 데이터를 읽어온다
     loadShowData();
     loadBoardData();
     loadMemberData();
 
-    // 키보드에서 사용자로부터 입력을 받을 도구를 준비한다.=프롬프트 객체를 생성한다.
     Prompt prompt = new Prompt(keyboard);
-
-    // 사용자명령어를 처리할 객체를 담을 맵을 = 보관소를 준비한다.
     HashMap<String, Command> commandMap = new HashMap<>();
 
     commandMap.put("/board/add", new BoardAddCommand(prompt, boardList));
@@ -102,6 +99,7 @@ public class App {
 
 
       commandStack.push(command);
+
       commandQueue.offer(command);
 
       Command commandHandler = commandMap.get(command);
@@ -120,7 +118,6 @@ public class App {
 
     keyboard.close();
 
-    // 쇼 멤버 보드 데이터를 파일에 저장(보관).
     saveShowData();
     saveBoardData();
     saveMemberData();
@@ -154,7 +151,7 @@ public class App {
 
 
   private static void loadShowData() {
-    File file = new File("./show.csv"); // 현재폴더: 비트캠프-프로젝트
+    File file = new File("./show.csv");
 
     FileReader in = null;
     Scanner dataScan = null;
@@ -162,35 +159,17 @@ public class App {
     try {
       in = new FileReader(file);
       dataScan = new Scanner(in);
-
       int count = 0;
 
 
-      // 해당되는 파일에서 데이터를 다읽을 때까지 반복문을 돌린다.
       while (true) {
         try {
-          // 스캐너를 통해 해당 파일에서 한 줄을 읽는다.
-          String line = dataScan.nextLine(); // 넥스트라인은 노서치엘리먼트 익셉션을 던질때로 데이터 읽었냐 안읽었냐 판단
 
-          // 한 줄 문자열을 콤마(,)를 기준으로 데이터를 쪼갠다
-          String[] data = line.split(",");
-
-          Show show = new Show();
-
-          show.setNo(Integer.parseInt(data[0]));
-          show.setCountry(data[1]);
-          show.setGenre(data[2]);
-          show.setTitleKor(data[3]);
-          show.setTitleEng(data[4]);
-          show.setPoint(Integer.parseInt(data[5]));
-          show.setComments(data[6]);
-          show.setWatchedEpisode(Integer.parseInt(data[7]));
-
-          showList.add(show);
+          showList.add(Show.valueOf(dataScan.nextLine()));
           count++;
 
         } catch (Exception e) {
-          break; // 반복문을 돌다가 읽어 들일 것이 없으면 반복문을 break한다.
+          break;
         }
       }
 
@@ -222,6 +201,7 @@ public class App {
 
   private static void loadBoardData() {
     File file = new File("./board.csv");
+
     FileReader in = null;
     Scanner dataScan = null;
 
@@ -232,24 +212,18 @@ public class App {
 
       while (true) {
         try {
-          String line = dataScan.nextLine();
-          String[] data = line.split(",");
-          Board board = new Board();
-
-          board.setNo(Integer.parseInt(data[0]));
-          board.setTitle(data[1]);
-          board.setDate(Date.valueOf(data[2])); //
-          board.setViewCount(Integer.parseInt(data[3]));
-          board.setWriter(data[4]);
-
-          boardList.add(board);
+          // String line = dataScan.nextLine();
+          // Board board = Board.valueOf(line);
+          // boardList.add(board);
+          // => 아래처럼 합친다
+          boardList.add(Board.valueOf(dataScan.nextLine()));
           count++;
 
         } catch (Exception e) {
           break;
         }
       }
-      System.out.printf("총 %d 개의 게시글 데이터를 로딩했습니다.\n", count);
+      System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", count);
 
     } catch (FileNotFoundException e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
@@ -257,59 +231,29 @@ public class App {
       try {
         dataScan.close();
       } catch (Exception e) {
-        // Scanner 객체 닫다가 오류가 발생하더라도 무시.
       }
       try {
         in.close();
       } catch (Exception e) {
-        // close() 실행하다가 오류가 발생한 경우 무시.
-        // 왜? 닫다가 발생한 오류는 특별히 처리할 게 없다.
       }
     }
 
   }
 
   private static void loadMemberData() {
-    // 데이터가 보관된 파일을 정보를 준비한다.
     File file = new File("./member.csv");
 
     FileReader in = null;
     Scanner dataScan = null;
 
     try {
-      // 파일을 읽을 때 사용할 도구를 준비한다.
       in = new FileReader(file);
-
-      // .csv 파일에서 한 줄 단위로 문자열을 읽는 기능이 필요한데,
-      // FileReader에는 그런 기능이 없다.
-      // 그래서 FileReader를 그대로 사용할 수 없고,
-      // 이 객체에 다른 도구를 연결하여 사용할 것이다.
-      //
       dataScan = new Scanner(in);
       int count = 0;
 
       while (true) {
         try {
-          // 파일에서 한 줄을 읽는다.
-          String line = dataScan.nextLine();
-
-          // 한 줄을 콤마(,)로 나눈다.
-          String[] data = line.split(",");
-
-          // 한 줄에 들어 있던 데이터를 추출하여 Member 객체에 담는다.
-          // => 데이터 순서는 다음과 같다.
-          // 번호,이름,이메일,비번,포토,전화번호,등록일
-          Member member = new Member();
-          member.setNo(Integer.parseInt(data[0]));
-          member.setName(data[1]);
-          member.setEmail(data[2]);
-          member.setPassword(data[3]);
-          member.setPhoto(data[4]);
-          member.setTel(data[5]);
-          member.setRegisteredDate(Date.valueOf(data[6]));
-
-          // Member 객체를 Command가 사용하는 목록에 저장한다.
-          memberList.add(member);
+          memberList.add(Member.valueOf(dataScan.nextLine()));
           count++;
 
         } catch (Exception e) {
@@ -320,21 +264,14 @@ public class App {
 
     } catch (FileNotFoundException e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
-      // 파일에서 데이터를 읽다가 오류가 발생하더라도
-      // 시스템을 멈추지 않고 계속 실행하게 한다.
-      // 이것이 예외처리를 하는 이유이다!!!
     } finally {
-      // 자원이 서로 연결된 경우에는 다른 자원을 이용하는 객체부터 닫는다.
       try {
         dataScan.close();
       } catch (Exception e) {
-        // Scanner 객체 닫다가 오류가 발생하더라도 무시한다.
       }
       try {
         in.close();
       } catch (Exception e) {
-        // close() 실행하다가 오류가 발생한 경우 무시한다.
-        // 왜? 닫다가 발생한 오류는 특별히 처리할 게 없다.
       }
     }
   }
@@ -353,12 +290,7 @@ public class App {
       int count = 0;
 
       for (Show show : showList) {
-        String line = String.format("%d,%s,%s,%s,%s,%d,%s,%d\n", show.getNo(), show.getCountry(),
-            show.getGenre(), show.getTitleKor(), show.getTitleEng(), show.getPoint(),
-            show.getComments(), show.getWatchedEpisode());
-
-
-        out.write(line);
+        out.write(show.toCsvString() + "\n");
         count++;
       }
       System.out.printf("총 %d 개의 드라마 데이터를 저장했습니다.\n", count);
@@ -378,25 +310,19 @@ public class App {
 
   private static void saveBoardData() {
 
-
     File file = new File("./board.csv");
 
     FileWriter out = null;
 
     try {
-      // 파일에 데이터를 저장할 때 사용할 도구를 준비한다.
       out = new FileWriter(file);
       int count = 0;
 
       for (Board board : boardList) {
-        // 게시글 목록에서 게시글 데이터를 꺼내 CSV 형식의 문자열로 만든다.
-        String line = String.format("%d,%s,%s,%d,%s\n", board.getNo(), board.getTitle(),
-            board.getDate(), board.getViewCount(), board.getWriter());
-
-        out.write(line);
+        out.write(board.toCsvString() + "\n"); // 줄바꿈 기호 여기서 추가 // 출력을 한 줄 단위로 하니까
         count++;
       }
-      System.out.printf("총 %d 개의 게시글 데이터를 저장했습니다.\n", count);
+      System.out.printf("총 %d 개의 게시물 데이터를 저장했습니다.\n", count);
 
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
@@ -405,30 +331,22 @@ public class App {
       try {
         out.close();
       } catch (IOException e) {
-        // FileWriter를 닫을 때 발생하는 예외는 무시.
       }
     }
 
   }
 
   private static void saveMemberData() {
-    // 데이터가 보관된 파일을 정보를 준비한다.
     File file = new File("./member.csv");
 
     FileWriter out = null;
 
     try {
-      // 파일에 데이터를 저장할 때 사용할 도구를 준비한다.
       out = new FileWriter(file);
       int count = 0;
 
       for (Member member : memberList) {
-        // 회원 목록에서 회원 데이터를 꺼내 CSV 형식의 문자열로 만든다.
-        String line = String.format("%d,%s,%s,%s,%s,%s,%s\n", member.getNo(), member.getName(),
-            member.getEmail(), member.getPassword(), member.getPhoto(), member.getTel(),
-            member.getRegisteredDate());
-
-        out.write(line);
+        out.write(member.toCsvString() + "\n");
         count++;
       }
       System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", count);
@@ -440,7 +358,6 @@ public class App {
       try {
         out.close();
       } catch (IOException e) {
-        // FileWriter를 닫을 때 발생하는 예외는 무시.
       }
     }
 
