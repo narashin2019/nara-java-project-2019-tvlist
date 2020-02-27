@@ -7,12 +7,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
+import com.google.gson.Gson;
 import gomgugu.njp.tvlist.domain.Board;
 import gomgugu.njp.tvlist.domain.Member;
 import gomgugu.njp.tvlist.domain.Show;
@@ -42,9 +45,9 @@ public class App {
   static Deque<String> commandStack = new ArrayDeque<>();
   static Queue<String> commandQueue = new LinkedList<>();
 
-  static ArrayList<Show> showList = new ArrayList<>();
-  static LinkedList<Board> boardList = new LinkedList<>();
-  static LinkedList<Member> memberList = new LinkedList<>();
+  static List<Show> showList = new ArrayList<>();
+  static List<Board> boardList = new ArrayList<>();
+  static List<Member> memberList = new ArrayList<>();
 
   public static void main(String[] args) {
 
@@ -151,52 +154,18 @@ public class App {
 
 
   private static void loadShowData() {
-    File file = new File("./show.csv");
-
-    FileReader in = null;
-    Scanner dataScan = null;
-
-    try {
-      in = new FileReader(file);
-      dataScan = new Scanner(in);
-      int count = 0;
+    File file = new File("./show.json");
 
 
-      while (true) {
-        try {
+    try (FileReader in = new FileReader(file)) {
 
-          showList.add(Show.valueOf(dataScan.nextLine()));
-          count++;
+      showList.addAll(Arrays.asList(new Gson().fromJson(in, Show[].class)));
 
-        } catch (Exception e) {
-          break;
-        }
-      }
+      System.out.printf("총 %d 개의 드라마 데이터를 로딩했습니다.\n", showList.size());
 
-      System.out.printf("총 %d 개의 드라마 데이터를 로딩했습니다.\n", count);
-
-
-    } catch (FileNotFoundException e) {
+    } catch (IOException e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
-      // 파일에서 데이터를 읽다가 오류가 발생하더라도
-      // 시스템을 멈추지 않고 계속 실행하게 한다.
-      // 이것이 예외처리를 하는 이유이다.
-    } finally {
-      // 자원이 서로 연결된 경우에는 안쪽 = 다른 자원을 이용하는 객체부터 닫는다.
-      try {
-        dataScan.close();
-      } catch (Exception e) {
-        // Scanner 객체 닫다가 오류가 발생하더라도 무시.
-      }
-
-      try {
-        in.close();
-      } catch (Exception e) { // IOException은 널포인트익셉션 처리 못해서 Exception으로 바꿨다.
-        // close() 실행 하다가 오류가 발생한 경우 무시.
-        // 왜? 닫다가 발생한 오류는 특별히 처리할 게 없다.
-      }
     }
-
   }
 
   private static void loadBoardData() {
