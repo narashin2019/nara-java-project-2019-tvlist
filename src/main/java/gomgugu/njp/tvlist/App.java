@@ -1,7 +1,6 @@
 package gomgugu.njp.tvlist;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -51,6 +50,7 @@ public class App {
 
   public static void main(String[] args) {
 
+    // 파일에서 데이터 로딩
     loadShowData();
     loadBoardData();
     loadMemberData();
@@ -121,6 +121,7 @@ public class App {
 
     keyboard.close();
 
+    // 데이터를 파일에 저장
     saveShowData();
     saveBoardData();
     saveMemberData();
@@ -169,79 +170,27 @@ public class App {
   }
 
   private static void loadBoardData() {
-    File file = new File("./board.csv");
+    File file = new File("./board.json");
 
-    FileReader in = null;
-    Scanner dataScan = null;
+    try (FileReader in = new FileReader(file)) {
+      boardList.addAll(Arrays.asList(new Gson().fromJson(in, Board[].class)));
+      System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", boardList.size());
 
-    try {
-      in = new FileReader(file);
-      dataScan = new Scanner(in);
-      int count = 0;
-
-      while (true) {
-        try {
-          // String line = dataScan.nextLine();
-          // Board board = Board.valueOf(line);
-          // boardList.add(board);
-          // => 아래처럼 합친다
-          boardList.add(Board.valueOf(dataScan.nextLine()));
-          count++;
-
-        } catch (Exception e) {
-          break;
-        }
-      }
-      System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", count);
-
-    } catch (FileNotFoundException e) {
+    } catch (IOException e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
-    } finally {
-      try {
-        dataScan.close();
-      } catch (Exception e) {
-      }
-      try {
-        in.close();
-      } catch (Exception e) {
-      }
     }
-
   }
 
+
   private static void loadMemberData() {
-    File file = new File("./member.csv");
+    File file = new File("./member.json");
 
-    FileReader in = null;
-    Scanner dataScan = null;
+    try (FileReader in = new FileReader(file)) {
+      memberList.addAll(Arrays.asList(new Gson().fromJson(in, Member[].class)));
+      System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", memberList.size());
 
-    try {
-      in = new FileReader(file);
-      dataScan = new Scanner(in);
-      int count = 0;
-
-      while (true) {
-        try {
-          memberList.add(Member.valueOf(dataScan.nextLine()));
-          count++;
-
-        } catch (Exception e) {
-          break;
-        }
-      }
-      System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", count);
-
-    } catch (FileNotFoundException e) {
+    } catch (IOException e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
-    } finally {
-      try {
-        dataScan.close();
-      } catch (Exception e) {
-      }
-      try {
-        in.close();
-      } catch (Exception e) {
-      }
     }
   }
 
@@ -249,87 +198,41 @@ public class App {
   private static void saveShowData() {
 
     // 데이터가 보관된 파일 정보를 준비한다.
-    File file = new File("./show.csv");
+    File file = new File("./show.json");
 
-    FileWriter out = null;
-
-    try {
-      // 파일에 데이터를 저장할 때 사용할 도구를 준비한다.
-      out = new FileWriter(file);
-      int count = 0;
-
-      for (Show show : showList) {
-        out.write(show.toCsvString() + "\n");
-        count++;
-      }
-      System.out.printf("총 %d 개의 드라마 데이터를 저장했습니다.\n", count);
+    try (FileWriter out = new FileWriter(file)) {
+      out.write(new Gson().toJson(showList));
+      System.out.printf("총 %d 개의 드라마 데이터를 저장했습니다.\n", showList.size());
 
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
-
-    } finally {
-      try {
-        out.close();
-      } catch (IOException e) {
-        // FileWriter를 닫을 때 발생하는 예외는 무시.
-
-      }
     }
   }
 
+
   private static void saveBoardData() {
+    File file = new File("./board.json");
 
-    File file = new File("./board.csv");
-
-    FileWriter out = null;
-
-    try {
-      out = new FileWriter(file);
-      int count = 0;
-
-      for (Board board : boardList) {
-        out.write(board.toCsvString() + "\n"); // 줄바꿈 기호 여기서 추가 // 출력을 한 줄 단위로 하니까
-        count++;
-      }
-      System.out.printf("총 %d 개의 게시물 데이터를 저장했습니다.\n", count);
+    try (FileWriter out = new FileWriter(file)) {
+      out.write(new Gson().toJson(boardList));
+      System.out.printf("총 %d 개의 게시물 데이터를 저장했습니다.\n", boardList.size());
 
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
 
-    } finally {
-      try {
-        out.close();
-      } catch (IOException e) {
-      }
     }
-
   }
 
   private static void saveMemberData() {
-    File file = new File("./member.csv");
+    File file = new File("./member.json");
 
-    FileWriter out = null;
-
-    try {
-      out = new FileWriter(file);
-      int count = 0;
-
-      for (Member member : memberList) {
-        out.write(member.toCsvString() + "\n");
-        count++;
-      }
-      System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", count);
+    try (FileWriter out = new FileWriter(file)) {
+      out.write(new Gson().toJson(memberList));
+      System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", memberList.size());
 
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
-
-    } finally {
-      try {
-        out.close();
-      } catch (IOException e) {
-      }
     }
-
   }
 
 
