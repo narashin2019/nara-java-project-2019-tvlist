@@ -21,7 +21,8 @@ public class BoardAddCommand implements Command {
     Board board = new Board();
 
     board.setNo(prompt.inputInt("번호? "));
-    board.setTitle(prompt.inputString("내용? "));
+    board.setTitle(prompt.inputString("제목? "));
+    board.setContent(prompt.inputString("내용? "));
     board.setDate(new Date(System.currentTimeMillis()));
     board.setViewCount(0);
 

@@ -1,11 +1,16 @@
 package gomgugu.njp.tvlist.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class Board {
+public class Board implements Serializable{
 
+  
+  private static final long serialVersionUID = 20200501L;
+  
   private int no;
   private String title;
+  private String content;
   private Date date;
   private int viewCount;
   private String writer;
@@ -19,23 +24,24 @@ public class Board {
     Board board = new Board();
     board.setNo(Integer.parseInt(data[0]));
     board.setTitle(data[1]);
-    board.setDate(Date.valueOf(data[2]));
-    board.setViewCount(Integer.parseInt(data[3]));
-    board.setWriter(data[4]);
+    board.setContent(data[2]);
+    board.setDate(Date.valueOf(data[3]));
+    board.setViewCount(Integer.parseInt(data[4]));
+    board.setWriter(data[5]);
     return board;
   }
 
   public String toCsvString() {
-    return String.format("%d,%s,%s,%d,%s", this.getNo(), this.getTitle(), this.getDate(),
-        this.getViewCount(), this.getWriter()); // csv문장을 만들어주는 포맷
-    // this가 가르키는 객체에서 값을 꺼내서 csv문자열을 만들어 리턴
-    // 이 메서드는 특정 인스턴스 값을 사용하기 때문에 스태틱이 아닌 인스턴스 메서드
+    return String.format("%d,%s,%s,%s,%d,%s", this.getNo(), this.getTitle(), this.getContent(), this.getDate(),
+        this.getViewCount(), this.getWriter());
   }
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + ((content == null) ? 0 : content.hashCode());
+    result = prime * result + ((date == null) ? 0 : date.hashCode());
     result = prime * result + no;
     result = prime * result + ((title == null) ? 0 : title.hashCode());
     result = prime * result + viewCount;
@@ -52,6 +58,16 @@ public class Board {
     if (getClass() != obj.getClass())
       return false;
     Board other = (Board) obj;
+    if (content == null) {
+      if (other.content != null)
+        return false;
+    } else if (!content.equals(other.content))
+      return false;
+    if (date == null) {
+      if (other.date != null)
+        return false;
+    } else if (!date.equals(other.date))
+      return false;
     if (no != other.no)
       return false;
     if (title == null) {
@@ -85,6 +101,14 @@ public class Board {
     this.title = title;
   }
 
+  public String getContent() {
+    return content;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
   public Date getDate() {
     return date;
   }
@@ -108,5 +132,8 @@ public class Board {
   public void setWriter(String writer) {
     this.writer = writer;
   }
+
+  
+  
 
 }

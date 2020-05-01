@@ -32,8 +32,10 @@ public class BoardUpdateCommand implements Command {
     newBoard.setViewCount(oldBoard.getViewCount());
     newBoard.setDate(new Date(System.currentTimeMillis()));
     newBoard.setTitle(
-        prompt.inputString(String.format("내용(%s)? ", oldBoard.getTitle()), oldBoard.getTitle()));
-
+        prompt.inputString(String.format("제목(%s)? ", oldBoard.getTitle()), oldBoard.getTitle()));
+    newBoard.setContent(
+        prompt.inputString(String.format("내용(%s)? ", oldBoard.getContent()), oldBoard.getContent()));
+    
     if (newBoard.equals(oldBoard)) {
       System.out.println("게시글 변경을 취소했습니다.");
       return;

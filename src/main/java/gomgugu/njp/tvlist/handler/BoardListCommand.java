@@ -18,7 +18,7 @@ public class BoardListCommand implements Command {
     Iterator<Board> iterator = boardList.iterator();
     while (iterator.hasNext()) {
       Board b = iterator.next();
-      System.out.printf("%d, %s, %s, %d\n", b.getNo(), b.getTitle(), b.getDate(), b.getViewCount());
+      System.out.printf("%d, %s, %s, %s, %d\n", b.getNo(), b.getTitle(), b.getContent(), b.getDate(), b.getViewCount());
     }
   }
 

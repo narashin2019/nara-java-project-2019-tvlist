@@ -1,6 +1,11 @@
 package gomgugu.njp.tvlist.domain;
 
-public class Show {
+import java.io.Serializable;
+
+public class Show implements Serializable{
+  
+  private static final long serialVersionUID = 20200501L;
+
   private int no;
   private String country;
   private String genre;

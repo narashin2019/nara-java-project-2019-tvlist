@@ -1,21 +1,25 @@
 package gomgugu.njp.tvlist;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
-import com.google.gson.Gson;
+import java.util.Set;
+import gomgugu.njp.tvlist.context.ApplicationContextListener;
 import gomgugu.njp.tvlist.domain.Board;
 import gomgugu.njp.tvlist.domain.Member;
 import gomgugu.njp.tvlist.domain.Show;
@@ -40,17 +44,49 @@ import gomgugu.njp.util.Prompt;
 
 public class App {
 
-  static Scanner keyboard = new Scanner(System.in);
+  Scanner keyboard = new Scanner(System.in);
 
-  static Deque<String> commandStack = new ArrayDeque<>();
-  static Queue<String> commandQueue = new LinkedList<>();
+  Deque<String> commandStack = new ArrayDeque<>();
+  Queue<String> commandQueue = new LinkedList<>();
 
-  static List<Show> showList = new ArrayList<>();
-  static List<Board> boardList = new ArrayList<>();
-  static List<Member> memberList = new ArrayList<>();
+  List<Show> showList = new ArrayList<>();
+  List<Board> boardList = new ArrayList<>();
+  List<Member> memberList = new ArrayList<>();
 
-  public static void main(String[] args) {
+  // 옵저버 목록을 관리할 객체 준비
+  // - 같은 인스턴스를 중복해서 등록하지 않도록 한다. 그래서 리스트 대신 set 썼다.
+  // - Set은 등록 순서를 따지지 않는다.
+  Set<ApplicationContextListener> listeners = new HashSet<>();
+  
+  // 옵저버를 등록하는 메서드이다.
+  public void addApplicationContextListener(ApplicationContextListener listener) {
+    listeners.add(listener);
+  }
 
+  // 옵저버를 제거하는 메서드이다.
+  public void removeApplicationContextListener(ApplicationContextListener listener) {
+    listeners.remove(listener);
+  }
+
+  // 애플리케이션이 시작되면, 등록된 리스너에게 알린다.
+  private void notifyApplicationInitialized() {
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextInitialized();
+    }
+  }
+
+  // 애플리케이션이 종료되면, 등록된 리스너에게 알린다.
+  private void notifyApplicationDestroyed() {
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextDestroyed();
+    }
+  }
+
+  public void service() {
+
+    notifyApplicationInitialized(); // 주석대신 외부 메서드로
+
+    // 파일에서 데이터 로딩
     loadShowData();
     loadBoardData();
     loadMemberData();
@@ -121,23 +157,18 @@ public class App {
 
     keyboard.close();
 
+    // 데이터를 파일에 저장
     saveShowData();
-    saveBoardData();
     saveMemberData();
+    saveBoardData();
 
-  }
+    notifyApplicationDestroyed(); // 주석대신 외부 메서드로
+
+  } // service()
 
 
-
-  // 이전에는 Stack에서 값을 꺼내는 방법과 Queue에서 값을 꺼내는 방법이 다르기 때문에
-  // printCommandHistory()와 printCommandHistory2() 메서드를 따로 정의했다.
-  // 이제 Stack과 Queue는 일관된 방식으로 값을 꺼내주는 Iterator가 있기 때문에
-  // 두 메서드를 하나로 합칠 수 있다.
-  // 파라미터로 Iterator를 받아서 처리하기만 하면 된다.
-  //
-  private static void printCommandHistory(Iterator<String> iterator) {
+  private void printCommandHistory(Iterator<String> iterator) {
     int count = 0;
-
     while (iterator.hasNext()) {
       System.out.println(iterator.next());
       count++;
@@ -153,187 +184,95 @@ public class App {
   }
 
 
-  private static void loadShowData() {
-    File file = new File("./show.json");
+  @SuppressWarnings("unchecked")
+  private void loadShowData() {
+    File file = new File("./lesson.ser2");
 
-
-    try (FileReader in = new FileReader(file)) {
-
-      showList.addAll(Arrays.asList(new Gson().fromJson(in, Show[].class)));
-
+    try (ObjectInputStream in =
+        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      showList = (List<Show>) in.readObject();
       System.out.printf("총 %d 개의 드라마 데이터를 로딩했습니다.\n", showList.size());
 
-    } catch (IOException e) {
+    } catch (Exception e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
     }
   }
 
-  private static void loadBoardData() {
-    File file = new File("./board.csv");
 
-    FileReader in = null;
-    Scanner dataScan = null;
+  @SuppressWarnings("unchecked")
+  private void loadBoardData() {
+    File file = new File("./board.ser2");
 
-    try {
-      in = new FileReader(file);
-      dataScan = new Scanner(in);
-      int count = 0;
+    try (ObjectInputStream in =
+        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      boardList = (List<Board>) in.readObject();
+      System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", boardList.size());
 
-      while (true) {
-        try {
-          // String line = dataScan.nextLine();
-          // Board board = Board.valueOf(line);
-          // boardList.add(board);
-          // => 아래처럼 합친다
-          boardList.add(Board.valueOf(dataScan.nextLine()));
-          count++;
-
-        } catch (Exception e) {
-          break;
-        }
-      }
-      System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", count);
-
-    } catch (FileNotFoundException e) {
+    } catch (Exception e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
-    } finally {
-      try {
-        dataScan.close();
-      } catch (Exception e) {
-      }
-      try {
-        in.close();
-      } catch (Exception e) {
-      }
     }
-
   }
 
-  private static void loadMemberData() {
-    File file = new File("./member.csv");
+  @SuppressWarnings("unchecked")
+  private void loadMemberData() {
+    File file = new File("./member.ser2");
 
-    FileReader in = null;
-    Scanner dataScan = null;
+    try (ObjectInputStream in =
+        new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      memberList = (List<Member>) in.readObject();
+      System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", memberList.size());
 
-    try {
-      in = new FileReader(file);
-      dataScan = new Scanner(in);
-      int count = 0;
-
-      while (true) {
-        try {
-          memberList.add(Member.valueOf(dataScan.nextLine()));
-          count++;
-
-        } catch (Exception e) {
-          break;
-        }
-      }
-      System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", count);
-
-    } catch (FileNotFoundException e) {
+    } catch (Exception e) {
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
-    } finally {
-      try {
-        dataScan.close();
-      } catch (Exception e) {
-      }
-      try {
-        in.close();
-      } catch (Exception e) {
-      }
     }
   }
 
+  private void saveShowData() {
+    File file = new File("./show.ser2");
 
-  private static void saveShowData() {
+    try (ObjectOutputStream out =
+        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+    
+      out.writeObject(showList);
+      
+      System.out.printf("총 %d 개의 드라마 데이터를 저장했습니다.\n", showList.size());
+    } catch (IOException e) {
+      System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
+    }
+  }
 
-    // 데이터가 보관된 파일 정보를 준비한다.
-    File file = new File("./show.csv");
+  private void saveBoardData() {
+    File file = new File("./board.ser2");
 
-    FileWriter out = null;
-
-    try {
-      // 파일에 데이터를 저장할 때 사용할 도구를 준비한다.
-      out = new FileWriter(file);
-      int count = 0;
-
-      for (Show show : showList) {
-        out.write(show.toCsvString() + "\n");
-        count++;
-      }
-      System.out.printf("총 %d 개의 드라마 데이터를 저장했습니다.\n", count);
+    try (ObjectOutputStream out =
+        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+      out.writeObject(boardList);
+      System.out.printf("총 %d 개의 게시물 데이터를 저장했습니다.\n", boardList.size());
 
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
 
-    } finally {
-      try {
-        out.close();
-      } catch (IOException e) {
-        // FileWriter를 닫을 때 발생하는 예외는 무시.
-
-      }
     }
   }
 
-  private static void saveBoardData() {
 
-    File file = new File("./board.csv");
+  private void saveMemberData() {
+    File file = new File("./member.ser2");
 
-    FileWriter out = null;
-
-    try {
-      out = new FileWriter(file);
-      int count = 0;
-
-      for (Board board : boardList) {
-        out.write(board.toCsvString() + "\n"); // 줄바꿈 기호 여기서 추가 // 출력을 한 줄 단위로 하니까
-        count++;
-      }
-      System.out.printf("총 %d 개의 게시물 데이터를 저장했습니다.\n", count);
+    try (ObjectOutputStream out =
+        new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+      out.writeObject(memberList);
+      System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", memberList.size());
 
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
-
-    } finally {
-      try {
-        out.close();
-      } catch (IOException e) {
-      }
     }
-
   }
-
-  private static void saveMemberData() {
-    File file = new File("./member.csv");
-
-    FileWriter out = null;
-
-    try {
-      out = new FileWriter(file);
-      int count = 0;
-
-      for (Member member : memberList) {
-        out.write(member.toCsvString() + "\n");
-        count++;
-      }
-      System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", count);
-
-    } catch (IOException e) {
-      System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
-
-    } finally {
-      try {
-        out.close();
-      } catch (IOException e) {
-      }
-    }
-
+  
   }
 
 
 
-}
+
 
 
