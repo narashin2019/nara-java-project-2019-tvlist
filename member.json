@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [{"no":1,"name":"신나라","email":"nara@test.com","password":"1111","photo":"11.jpg","tel":"1111-1111","registeredDate":"5월 1, 2020"}]
+=======
+[{"no":1,"name":"신나라","email":"nara@gmail.com","password":"1111","photo":"111","tel":"1111-1111","registeredDate":"3월 17, 2020"}]
+>>>>>>> c2cf5c280407991c6fe814c4aa1d3581a59914c4

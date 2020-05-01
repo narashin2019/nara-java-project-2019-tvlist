@@ -1,10 +1,18 @@
 package gomgugu.njp.tvlist;
 
+<<<<<<< HEAD
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+=======
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+>>>>>>> c2cf5c280407991c6fe814c4aa1d3581a59914c4
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -84,8 +92,11 @@ public class App {
 
   public void service() {
 
+<<<<<<< HEAD
     notifyApplicationInitialized(); // 주석대신 외부 메서드로
 
+=======
+>>>>>>> c2cf5c280407991c6fe814c4aa1d3581a59914c4
     // 파일에서 데이터 로딩
     loadShowData();
     loadBoardData();
@@ -184,6 +195,7 @@ public class App {
   }
 
 
+<<<<<<< HEAD
   @SuppressWarnings("unchecked")
   private void loadShowData() {
     File file = new File("./lesson.ser2");
@@ -191,6 +203,13 @@ public class App {
     try (ObjectInputStream in =
         new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
       showList = (List<Show>) in.readObject();
+=======
+  private static void loadShowData() {
+    File file = new File("./show.json");
+
+    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+      showList.addAll(Arrays.asList(new Gson().fromJson(in, Show[].class)));
+>>>>>>> c2cf5c280407991c6fe814c4aa1d3581a59914c4
       System.out.printf("총 %d 개의 드라마 데이터를 로딩했습니다.\n", showList.size());
 
     } catch (Exception e) {
@@ -198,6 +217,7 @@ public class App {
     }
   }
 
+<<<<<<< HEAD
 
   @SuppressWarnings("unchecked")
   private void loadBoardData() {
@@ -209,10 +229,21 @@ public class App {
       System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", boardList.size());
 
     } catch (Exception e) {
+=======
+  private static void loadBoardData() {
+    File file = new File("./board.json");
+
+    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+      boardList.addAll(Arrays.asList(new Gson().fromJson(in, Board[].class)));
+      System.out.printf("총 %d 개의 게시물 데이터를 로딩했습니다.\n", boardList.size());
+
+    } catch (IOException e) {
+>>>>>>> c2cf5c280407991c6fe814c4aa1d3581a59914c4
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
     }
   }
 
+<<<<<<< HEAD
   @SuppressWarnings("unchecked")
   private void loadMemberData() {
     File file = new File("./member.ser2");
@@ -223,6 +254,17 @@ public class App {
       System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", memberList.size());
 
     } catch (Exception e) {
+=======
+
+  private static void loadMemberData() {
+    File file = new File("./member.json");
+
+    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+      memberList.addAll(Arrays.asList(new Gson().fromJson(in, Member[].class)));
+      System.out.printf("총 %d 개의 회원 데이터를 로딩했습니다.\n", memberList.size());
+
+    } catch (IOException e) {
+>>>>>>> c2cf5c280407991c6fe814c4aa1d3581a59914c4
       System.out.println("파일 읽기 중 오류 발생! - " + e.getMessage());
     }
   }
@@ -230,23 +272,44 @@ public class App {
   private void saveShowData() {
     File file = new File("./show.ser2");
 
+<<<<<<< HEAD
     try (ObjectOutputStream out =
         new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
     
       out.writeObject(showList);
       
       System.out.printf("총 %d 개의 드라마 데이터를 저장했습니다.\n", showList.size());
+=======
+  private static void saveShowData() {
+
+    // 데이터가 보관된 파일 정보를 준비한다.
+    File file = new File("./show.json");
+
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
+      out.write(new Gson().toJson(showList));
+      System.out.printf("총 %d 개의 드라마 데이터를 저장했습니다.\n", showList.size());
+
+>>>>>>> c2cf5c280407991c6fe814c4aa1d3581a59914c4
     } catch (IOException e) {
       System.out.println("파일 쓰기 중 오류 발생! - " + e.getMessage());
     }
   }
 
+<<<<<<< HEAD
   private void saveBoardData() {
     File file = new File("./board.ser2");
 
     try (ObjectOutputStream out =
         new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
       out.writeObject(boardList);
+=======
+
+  private static void saveBoardData() {
+    File file = new File("./board.json");
+
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
+      out.write(new Gson().toJson(boardList));
+>>>>>>> c2cf5c280407991c6fe814c4aa1d3581a59914c4
       System.out.printf("총 %d 개의 게시물 데이터를 저장했습니다.\n", boardList.size());
 
     } catch (IOException e) {
@@ -255,6 +318,7 @@ public class App {
     }
   }
 
+<<<<<<< HEAD
 
   private void saveMemberData() {
     File file = new File("./member.ser2");
@@ -262,6 +326,14 @@ public class App {
     try (ObjectOutputStream out =
         new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
       out.writeObject(memberList);
+=======
+
+  private static void saveMemberData() {
+    File file = new File("./member.json");
+
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
+      out.write(new Gson().toJson(memberList));
+>>>>>>> c2cf5c280407991c6fe814c4aa1d3581a59914c4
       System.out.printf("총 %d 개의 회원 데이터를 저장했습니다.\n", memberList.size());
 
     } catch (IOException e) {
