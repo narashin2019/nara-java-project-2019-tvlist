@@ -95,7 +95,7 @@ public class App {
     // List 객체를 꺼내보자!
     // command에서 쓸 수 있도록
     List<Board> boardList = (List<Board>) context.get("boardList");
-    List<Show> showList = (List<Show>) context.get("ShowList");
+    List<Show> showList = (List<Show>) context.get("showList");
     List<Member> memberList = (List<Member>) context.get("memberList");
     
     
@@ -190,6 +190,8 @@ public class App {
   public static void main(String[] args) {
     App app = new App();
 
+    // 애플리케이션 시작 종료 시 인사하는 것을 추가한다.
+    app.addApplicationContextListener(new GreetingListener());
     // 애플리케이션의 상태를 정보를 받을 옵저버를 등록한다.
     app.addApplicationContextListener(new DataLoaderListener());
 

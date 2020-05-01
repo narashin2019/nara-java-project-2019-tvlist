@@ -38,7 +38,7 @@ public class DataLoaderListener implements ApplicationContextListener {
     // 데이터가 저장되어 있는 List 객체를 이 메서드를 호출한 쪽(App)에서
     // 사용할 수 있도록 Map 객체에 담아둔다.
     context.put("boardList", boardList);
-    context.put("lessonList", showList);
+    context.put("showList", showList);
     context.put("memberList", memberList);
   }
 
